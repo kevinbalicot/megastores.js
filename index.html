@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Megastore</title>
+    </head>
+    <style>
+        body {
+            margin: auto;
+            font-family: sans-serif;
+            font-size: 16px;
+            background: #F1F4F7;
+            color: #767A7D;
+        }
+
+        .component {
+            margin: auto;
+            width: 50%;
+        }
+
+        ul.list {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul.list li {
+            list-style: none;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 0 rgba(0,0,0,0.075);
+            background: white;
+        }
+
+        input[type=text] {
+            padding: 5px;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 5px;
+            font-size: 1em;
+            background: #8CC74F;
+            border: solid 1px #91c957;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script src="lib/megastores-client.js"></script>
+    <body>
+        <div class="component">
+            <h1>ToDo list</h1>
+            <ul id="todo" class="list"></ul>
+
+            <form id="todo-form">
+                <input type="text" id="todo-text"/>
+                <button type="submit">Ajouter</button>
+            </form>
+        </div>
+
+        <script>
+            var todoStore = new Store('todo');
+            var megastores = new Megastores();
+
+            megastores.attach(todoStore).connect('http://localhost', '8081').on('open', function () {
+                console.log('loool');
+            });
+
+            function render (items, id) {
+                var ul = document.querySelector(id);
+                ul.innerHTML = '';
+
+                items.forEach(function(item) {
+                    var li = document.createElement('li');
+                    li.innerHTML = item.text;
+                    ul.appendChild(li);
+                });
+            }
+
+            render(todoStore.items, '#todo');
+
+            document.querySelector('#todo-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                var input = document.querySelector('#todo-text');
+                todoStore.put({ text: input.value });
+                input.value = null;
+            });
+        </script>
+    </body>
+</html>
