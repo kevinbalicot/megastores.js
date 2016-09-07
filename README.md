@@ -132,6 +132,7 @@ megastores.connect('http://localhost', 8080).on('open', () => {
     * `initialStore` can be an array or a Object
     * `options` Object of options
         * `offline` Default `false`, enable offline mode, there are no echanges with server, and data are store into local storage
+	* `enableSynchronize` Default `true`, enable caching items when connection with server lost
 * `put(item|property)` Put into store a item or a property of Object
 * `update(index, item|property)` Update item or property at `index`
 * `remove(index|property)` Remove item or property
@@ -194,7 +195,7 @@ megastores.connect('http://localhost', 8080).on('open', () => {
 ### Todolist server
 
 ```
-const { Store, Megastores } = requre('megastores.js');
+const { Store, Megastores } = require('megastores.js');
 
 var items = [] // Get items from database
 

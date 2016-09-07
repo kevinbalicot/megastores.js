@@ -13,6 +13,8 @@ class Store extends BaseStore {
         super(name, intialState, options);
 
         this.cache = [];
+	// Enable caching items when connection with server lost
+	this.enableSynchronize = options.enableSynchronize || true;
 
         if (!!this.options.offline) {
             this.enableOfflineMode();
@@ -42,7 +44,7 @@ class Store extends BaseStore {
      */
     put (item) {
         // Cache action if there are no connection
-        if (!this.options.offline && !this.store.connected) {
+        if (!this.options.offline && !this.store.connected && this.enableSynchronize) {
             this.cache.push({ type: this.ADD_ITEM, payload: item });
         }
 
@@ -56,7 +58,7 @@ class Store extends BaseStore {
      */
     update (index, item) {
         // Cache action if there are no connection
-        if (!this.options.offline && !this.store.connected) {
+        if (!this.options.offline && !this.store.connected && this.enableSynchronize) {
             this.cache.push({ type: this.UPDATE_ITEM, payload: item, index: index });
         }
 
@@ -70,7 +72,7 @@ class Store extends BaseStore {
      */
     remove (index, item) {
         // Cache action if there are no connection
-        if (!this.options.offline && !this.store.connected) {
+        if (!this.options.offline && !this.store.connected && this.enableSynchronize) {
             this.cache.push({ type: this.DELETE_ITEM, payload: item, index: index });
         }
 
