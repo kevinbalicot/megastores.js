@@ -1,6 +1,6 @@
 # MEGASTORES.JS
 
-`megastores` is a store manager with realtime echanges between client and server
+`megastores` is a store manager with realtime exchanges between client and server
 
 ## Dependances
 
@@ -17,7 +17,7 @@
 $ npm install --save megastores
 ```
 
-## How to use
+## How to use it
 ### Server
 
 ```
@@ -49,8 +49,8 @@ myStore.subscribe(state => {
 
 ## Features
 
-* Realtime echanges between client and server, every action dispatched is synchronize between server and client.
-* Automatic reconnection if connection with server was lost and resynchronization
+* Realtime exchanges between client and server, every action dispatched is synchronized between server and client.
+* Automatic reconnection and resynchronization if connection with server is lost
 * Offline mode with local storage persistence
 
 
@@ -60,7 +60,7 @@ myStore.subscribe(state => {
 #### Events
  * `open` Called every time when client opens connection with server
  * `close ` Called every time when client loses connection with server
- * `message` Called every time when client echanges with server
+ * `message` Called every time when client exchanges with server
 
 ```
 // Exemple
@@ -73,7 +73,7 @@ megastores.listen(8080).on('open', () => {
 #### Methods
 
 * `()` Constructor, return an instance of `Megastores`
-* `attach(store|[stores])` Attach a store or a list of stores, also create `redux` store, so you need to attach all stores before start server
+* `attach(store|[stores])` Attach a Store or a list of stores, also create `redux` store, so you need to attach all stores before starting server
 * `listen(port)` Start server and listen on port `port`
 
 ```
@@ -94,14 +94,14 @@ megastores.attach([store1, store2]).listen(8080);
 #### Methods
 
 * `(name, initialStore = [])` Constructor, return an instance of `Store`
-    * `initialStore` can be an array or a Object
-* `put(item|property)` Put into store a item or a property of Object
+    * `initialStore` can be an array or an Object
+* `put(item|property)` Put an item or a property of Object into Store 
 * `update(index, item|property)` Update item or property at `index`
 * `remove(index|property)` Remove item or property
-* `use(callback)` Add middelware called every time action is dispatching
+* `use(callback)` Add middleware called every time when action is dispatching
     * `callback(action, oldState, newState, next)`
 * `subscribe(callback)` Add listener called each time action is dispatched
-    * `callback(items)` With `items` is the current state of store
+    * `callback(items)` With `items` is the current state of Store
 
 -------------------
 
@@ -110,7 +110,7 @@ megastores.attach([store1, store2]).listen(8080);
 #### Events
  * `open` Called every time when connection with server is open
  * `close ` Called every time when client loses connection with server
- * `message` Called every time when server echanges with client
+ * `message` Called every time when server exchanges with client
 
 ```
 // Exemple
@@ -123,7 +123,7 @@ megastores.connect('http://localhost', 8080).on('open', () => {
 #### Methods
 
 * `()` Constructor, return an instance of `Megastores`
-* `attach(store|[stores])` Attach a store or a list of stores, also create `redux` store, so you need to attach all stores before start connection with server
+* `attach(store|[stores])` Attach a Store or a list of stores, also create `redux` store, so you need to attach all stores before starting a connection with server
 * `connect(url, port)` Connect to server with `url` and `port`
 
 ### Client - Store
@@ -135,17 +135,17 @@ megastores.connect('http://localhost', 8080).on('open', () => {
 #### Methods
 
 * `(name, initialStore = [], options = {})` Constructor, return an instance of `Store`
-    * `initialStore` can be an array or a Object
+    * `initialStore` can be an array or an Object
     * `options` Object of options
-        * `offline` Default `false`, enable offline mode, there are no echanges with server, and data are store into local storage
-        * `enableSynchronize` Default `true`, enable caching items when connection with server lost
-* `put(item|property)` Put into store a item or a property of Object
+        * `offline` Default `false`, enable offline mode, there are no exchanges with server, and data are stored into local storage
+        * `enableSynchronize` Default `true`, enable catching items when connection with server is lost
+* `put(item|property)` Put an item or a property of Object into Store 
 * `update(index, item|property)` Update item or property at `index`
 * `remove(index|property)` Remove item or property
-* `use(callback)` Add middelware called every time action is dispatching
+* `use(callback)` Add middleware called every time when action is dispatching
     * `callback(action, oldState, newState, next)`
 * `subscribe(callback)` Add listener called each time action is dispatched
-    * `callback(items)` With `items` is the current state of store
+    * `callback(items)` With `items` is the current state of Store
 
 -----------
 
