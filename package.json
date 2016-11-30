@@ -9,6 +9,10 @@
   },
   "author": "Kevin Balicot <kevinbalicot@gmail.com>",
   "license": "MIT",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/kevinbalicot/megastores.js.git"
+  },
   "dependencies": {
     "engine.io": "^1.6.9",
     "engine.io-client": "^1.6.9",
