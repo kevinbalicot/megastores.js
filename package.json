@@ -1,7 +1,7 @@
 {
   "name": "megastores",
   "version": "0.1.1",
-  "description": "Store manager with realtime echanges between server and client",
+  "description": "Store manager with realtime exchanges between server and client",
   "main": "src/server/index.js",
   "scripts": {
     "test": "mocha ./test",

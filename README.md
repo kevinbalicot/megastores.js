@@ -20,8 +20,8 @@ $ npm install --save megastores
 ## How to use it
 ### Server
 
-```
-const { Store, Megastores } = require('megastores.js');
+```javascript
+const { Store, Megastores } = require('megastores');
 
 var myStore = new Store('my-store');
 var megastores = new Megastores();
@@ -35,7 +35,7 @@ myStore.subscribe(state => {
 
 ### Client
 
-```
+```javascript
 <script src="lib/megastores-client.js">
 <script>
     var store = new Store('my-store');
@@ -62,7 +62,7 @@ myStore.subscribe(state => {
  * `close ` Called every time when client loses connection with server
  * `message` Called every time when client exchanges with server
 
-```
+```javascript
 // Exemple
 var megastores = new Megastores();
 megastores.listen(8080).on('open', () => {
@@ -76,7 +76,7 @@ megastores.listen(8080).on('open', () => {
 * `attach(store|[stores])` Attach a Store or a list of stores, also create `redux` store, so you need to attach all stores before starting server
 * `listen(port)` Start server and listen on port `port`
 
-```
+```javascript
 // Exemple
 var store1 = new Store('store1');
 var store2 = new Store('store2');
@@ -112,7 +112,7 @@ megastores.attach([store1, store2]).listen(8080);
  * `close ` Called every time when client loses connection with server
  * `message` Called every time when server exchanges with client
 
-```
+```javascript
 // Exemple
 var megastores = new Megastores();
 megastores.connect('http://localhost', 8080).on('open', () => {
@@ -153,7 +153,7 @@ megastores.connect('http://localhost', 8080).on('open', () => {
 
 ### Todolist client
 
-```
+```javascript
 <script src="lib/megastores-client.js">
 
 <ul id="list">
@@ -200,8 +200,8 @@ megastores.connect('http://localhost', 8080).on('open', () => {
 
 ### Todolist server
 
-```
-const { Store, Megastores } = require('megastores.js');
+```javascript
+const { Store, Megastores } = require('megastores');
 
 var items = [] // Get items from database
 
@@ -230,4 +230,4 @@ MIT
 $ npm test
 ```
 
-![Have fun](http://cataas.com/cat/says/have%20fun?type=sq)
+![Have fun](http://cataas.com/c/583e9cbe0f673a7dec2860de/s/have%20fun?t=sq)
