@@ -11,6 +11,12 @@
 
 * nodejs >= 4.0 for server only
 
+## Installation
+
+```
+$ npm install --save megastores
+```
+
 ## How to use
 ### Server
 

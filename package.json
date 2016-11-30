@@ -1,5 +1,5 @@
 {
-  "name": "megastores.js",
+  "name": "megastores",
   "version": "0.1.0",
   "description": "Store manager with realtime echanges between server and client",
   "main": "src/server/index.js",
