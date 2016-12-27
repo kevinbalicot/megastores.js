@@ -8,7 +8,7 @@ gulp.task('build', function() {
         .bundle()
         .on('error', function (error) { console.error(error.toString()); })
         .pipe(source('megastores-client.js'))
-        .pipe(gulp.dest('lib'));
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('default', ['build']);

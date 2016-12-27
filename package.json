@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha ./test",
     "build": "gulp",
-    "start": "http-server ./demo"
+    "start": "http-server ./demo",
+    "postinstall": "gulp"
   },
   "author": "Kevin Balicot <kevinbalicot@gmail.com>",
   "license": "MIT",
