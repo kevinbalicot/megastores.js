@@ -15,7 +15,6 @@ class Megastores extends BaseMegastores {
      * @param port
      */
     listen (port = 8080) {
-
         if (this.store == null) {
             throw new Error(this.ERROR_INSTANTIATE);
         }
@@ -23,13 +22,14 @@ class Megastores extends BaseMegastores {
         // Listen on port
         this.server = engine.listen(port);
         this.server.on('connection', client => {
-            this.trigger('open');
+            this.trigger('open', client);
             this.synchronize(client);
 
             // Receive message from clients, dispatch to store
-            client.on('message', action => {
-                this.trigger('message');
-                this.dispatch(JSON.parse(action), client);
+            client.on('message', message => {
+                const action = message;
+                this.trigger('message', action);
+                this.dispatch(action, client);
             });
 
             client.on('close', () => {
@@ -58,7 +58,6 @@ class Megastores extends BaseMegastores {
      * @throw Error
      */
     broadcast (action, client = null) {
-
         if (this.server == null) {
             throw new Error(this.ERROR_INSTANTIATE);
         }

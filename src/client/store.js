@@ -13,8 +13,8 @@ class Store extends BaseStore {
         super(name, intialState, options);
 
         this.cache = [];
-	// Enable caching items when connection with server lost
-	this.enableSynchronize = options.enableSynchronize || true;
+    	// Enable caching items when connection with server lost
+    	this.enableSynchronize = options.enableSynchronize || true;
 
         if (!!this.options.offline) {
             this.enableOfflineMode();

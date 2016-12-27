@@ -19,9 +19,8 @@ class Megastores extends BaseMegastores {
      * @param port
      */
     connect (url, port = 8080) {
-
         if (this.store == null) {
-            throw new Error('No store instanciated.');
+            throw new Error(this.ERROR_INSTANTIATE);
         }
 
         if (!!this.connected) {
@@ -44,9 +43,10 @@ class Megastores extends BaseMegastores {
             }
 
             // Receive message from server, dispatch to store
-            this.connection.on('message', action => {
-                this.trigger('message');
-                this.store.dispatch(JSON.parse(action));
+            this.connection.on('message', message => {
+                const action = JSON.parse(message);
+                this.trigger('message', action);
+                this.store.dispatch(action);
             });
 
             // Lost connection with server, try to reconnect

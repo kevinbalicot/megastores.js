@@ -58,9 +58,9 @@ myStore.subscribe(state => {
 ### Server - Megastores
 
 #### Events
- * `open` Called every time when client opens connection with server
+ * `open` (client) Called every time when client opens connection with server
  * `close ` Called every time when client loses connection with server
- * `message` Called every time when client exchanges with server
+ * `message` (message) Called every time when client exchanges with server
 
 ```javascript
 // Exemple
@@ -95,7 +95,7 @@ megastores.attach([store1, store2]).listen(8080);
 
 * `(name, initialStore = [])` Constructor, return an instance of `Store`
     * `initialStore` can be an array or an Object
-* `put(item|property)` Put an item or a property of Object into Store 
+* `put(item|property)` Put an item or a property of Object into Store
 * `update(index, item|property)` Update item or property at `index`
 * `remove(index|property)` Remove item or property
 * `use(callback)` Add middleware called every time when action is dispatching
@@ -110,7 +110,7 @@ megastores.attach([store1, store2]).listen(8080);
 #### Events
  * `open` Called every time when connection with server is open
  * `close ` Called every time when client loses connection with server
- * `message` Called every time when server exchanges with client
+ * `message` (message) Called every time when server exchanges with client
 
 ```javascript
 // Exemple
@@ -139,7 +139,7 @@ megastores.connect('http://localhost', 8080).on('open', () => {
     * `options` Object of options
         * `offline` Default `false`, enable offline mode, there are no exchanges with server, and data are stored into local storage
         * `enableSynchronize` Default `true`, enable catching items when connection with server is lost
-* `put(item|property)` Put an item or a property of Object into Store 
+* `put(item|property)` Put an item or a property of Object into Store
 * `update(index, item|property)` Update item or property at `index`
 * `remove(index|property)` Remove item or property
 * `use(callback)` Add middleware called every time when action is dispatching

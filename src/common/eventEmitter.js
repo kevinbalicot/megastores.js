@@ -13,7 +13,6 @@ class EventEmitter {
      * @param context
      */
     on (event, callback, context) {
-
         if (!this.listeners[event]) {
             this.listeners[event] = [];
         }
@@ -34,7 +33,6 @@ class EventEmitter {
      * @param context
      */
     once (event, callback, context) {
-
         if (!this.listeners[event]) {
             this.listeners[event] = [];
         }
