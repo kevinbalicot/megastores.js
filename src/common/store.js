@@ -1,5 +1,7 @@
 'use strict';
 
+const compose = require('./compose');
+
 class BaseStore {
 
     /**
@@ -13,7 +15,7 @@ class BaseStore {
         this.options = options;
         this.store = null;
         this.intialState = intialState;
-        this.middelwares = [];
+        this.middlewares = [];
 
         // Reducer events
         this.ADD_ITEM = `add_item_into_${this.name}`;
@@ -117,10 +119,7 @@ class BaseStore {
      * @param newState
      */
     dispatchMiddelwares (action, oldState, newState) {
-        if (this.middelwares.length > 0) {
-            let firstMiddelware = this.middelwares[0];
-            firstMiddelware.callback(action, oldState, newState, firstMiddelware.next);
-        }
+        compose(action, oldState, newState, this.middlewares)();
     }
 
     /**
@@ -128,12 +127,7 @@ class BaseStore {
      * @param callback
      */
     use (callback) {
-        // Last middelware next to this middelware
-        if (this.middelwares.length > 0) {
-            this.middelwares[this.middelwares.length - 1].next = callback;
-        }
-
-        this.middelwares.push({ callback, next: () => {} });
+        this.middlewares.push({ callback });
     }
 
     /**

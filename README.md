@@ -210,12 +210,11 @@ const megastores = new Megastores();
 
 megastores.attach(todoStore).listen(8080);
 
-todoStore.use(function(action, oldState, newState, next) {
+todoStore.use((action, oldState, newState, next) => {
     // Persist data into database
 
-    next(action, oldState, newState);
+    next();
 });
-
 ```
 
 ---------------------

@@ -27,6 +27,7 @@ class Megastores extends BaseMegastores {
             return this;
         }
 
+        clearInterval(this.connecting);
         this.listenNewConnection(url, port);
 
         // Connect to server
