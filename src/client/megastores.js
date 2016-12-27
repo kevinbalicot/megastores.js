@@ -81,7 +81,6 @@ class Megastores extends BaseMegastores {
         this.stores.forEach(store => {
             // Use store cache
             store.cache.forEach(action => this.connection.send(JSON.stringify(action)));
-            store.cache = [];
         });
     }
 

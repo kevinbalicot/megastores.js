@@ -27,7 +27,7 @@ class Megastores extends BaseMegastores {
 
             // Receive message from clients, dispatch to store
             client.on('message', message => {
-                const action = message;
+                const action = JSON.parse(message);
                 this.trigger('message', action);
                 this.dispatch(action, client);
             });

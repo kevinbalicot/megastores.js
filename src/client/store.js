@@ -14,11 +14,39 @@ class Store extends BaseStore {
 
         this.cache = [];
     	// Enable caching items when connection with server lost
-    	this.enableSynchronize = options.enableSynchronize || true;
+    	this.enableCache = options.enableCache || true;
 
         if (!!this.options.offline) {
             this.enableOfflineMode();
         }
+    }
+
+    /**
+     * Reducer, synchronize from server
+     * @param state
+     * @param action
+     */
+    reducer (state = [], action) {
+        switch (action.type) {
+            // Only server call this action
+            case this.SYNCHRONIZE_ALL_ITEMS:
+                state = super.createNewState(action.payload);
+                this.cache.forEach(cache => {
+                    state = super.reducer(state, cache);
+                });
+                this.clearCache();
+                break;
+        }
+
+        return super.reducer(state, action);
+    }
+
+    /**
+     * Clear cache and local storage cache
+     */
+    clearCache () {
+        this.cache = [];
+        localStorage.removeItem(`state_${this.name}`);
     }
 
     /**
@@ -44,7 +72,7 @@ class Store extends BaseStore {
      */
     put (item) {
         // Cache action if there are no connection
-        if (!this.options.offline && !this.store.connected && this.enableSynchronize) {
+        if (!this.options.offline && !this.store.connected && this.enableCache) {
             this.cache.push({ type: this.ADD_ITEM, payload: item });
         }
 
@@ -58,7 +86,7 @@ class Store extends BaseStore {
      */
     update (index, item) {
         // Cache action if there are no connection
-        if (!this.options.offline && !this.store.connected && this.enableSynchronize) {
+        if (!this.options.offline && !this.store.connected && this.enableCache) {
             this.cache.push({ type: this.UPDATE_ITEM, payload: item, index: index });
         }
 
@@ -72,7 +100,7 @@ class Store extends BaseStore {
      */
     remove (index, item) {
         // Cache action if there are no connection
-        if (!this.options.offline && !this.store.connected && this.enableSynchronize) {
+        if (!this.options.offline && !this.store.connected && this.enableCache) {
             this.cache.push({ type: this.DELETE_ITEM, payload: item, index: index });
         }
 

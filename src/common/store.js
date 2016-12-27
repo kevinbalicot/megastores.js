@@ -36,7 +36,6 @@ class BaseStore {
 
         switch (action.type) {
             case this.ADD_ITEM:
-            case this.SYNCHRONIZE_ALL_ITEMS:
                 newState = this.merge(newState, action.payload);
                 edited = true;
                 break;
@@ -46,6 +45,9 @@ class BaseStore {
                 break;
             case this.DELETE_ITEM:
                 newState = this.delete(newState, action.index);
+                edited = true;
+                break;
+            case this.SYNCHRONIZE_ALL_ITEMS:
                 edited = true;
                 break;
         }

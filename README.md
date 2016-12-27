@@ -138,7 +138,7 @@ megastores.connect('http://localhost', 8080).on('open', () => {
     * `initialStore` can be an array or an Object
     * `options` Object of options
         * `offline` Default `false`, enable offline mode, there are no exchanges with server, and data are stored into local storage
-        * `enableSynchronize` Default `true`, enable catching items when connection with server is lost
+        * `enableCache` Default `true`, enable catching items when connection with server is lost
 * `put(item|property)` Put an item or a property of Object into Store
 * `update(index, item|property)` Update item or property at `index`
 * `remove(index|property)` Remove item or property
