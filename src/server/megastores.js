@@ -29,7 +29,12 @@ class Megastores extends BaseMegastores {
             client.on('message', message => {
                 const action = JSON.parse(message);
                 this.trigger('message', action);
-                this.dispatch(action, client);
+
+                if (!!action.event) {
+                    this.trigger(action.event, { data: action.data, client: client });
+                } else {
+                    this.dispatch(action, client);
+                }
             });
 
             client.on('close', () => {
@@ -54,16 +59,16 @@ class Megastores extends BaseMegastores {
     /**
      * Broadcast client actions dispatched
      * @param action
-     * @param client
+     * @param fromClient
      * @throw Error
      */
-    broadcast (action, client = null) {
+    broadcast (action, fromClient = null) {
         if (this.server == null) {
             throw new Error(this.ERROR_INSTANTIATE);
         }
 
         for (let key in this.server.clients) {
-            if (client !== null && key === client.id) {
+            if (fromClient !== null && key === fromClient.id) {
                 continue;
             }
 
@@ -82,6 +87,17 @@ class Megastores extends BaseMegastores {
         }
 
         this.store.dispatch(action);
+    }
+
+    /**
+     * Send message to client or all client
+     */
+    send (event, data, client = null) {
+        if (!!client) {
+            client.send(JSON.stringify({ event, data }));
+        } else {
+            this.broadcast({ event, data });
+        }
     }
 }
 

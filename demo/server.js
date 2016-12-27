@@ -10,6 +10,7 @@ let todoStore = new Store('todo', [
 todoStore.use((action, oldState, newState, next) => {
     console.log('middleware');
     console.log(action, oldState, newState);
+
     next();
 });
 

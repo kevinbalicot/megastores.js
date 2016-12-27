@@ -75,6 +75,8 @@ megastores.listen(8080).on('open', () => {
 * `()` Constructor, return an instance of `Megastores`
 * `attach(store|[stores])` Attach a Store or a list of stores, also create `redux` store, so you need to attach all stores before starting server
 * `listen(port)` Start server and listen on port `port`
+* `on(event|custom-event, callback)` Listen event
+* `send(custom-event, data, client = null)` Send event to one client or all of them
 
 ```javascript
 // Exemple
@@ -83,6 +85,11 @@ var store2 = new Store('store2');
 
 var megastores = new Megastores();
 megastores.attach([store1, store2]).listen(8080);
+
+megastores.on('custom-event', message => {
+    let client = message.client;
+    let data = message.data;
+});
 ```
 
 ### Server - Store
@@ -125,6 +132,8 @@ megastores.connect('http://localhost', 8080).on('open', () => {
 * `()` Constructor, return an instance of `Megastores`
 * `attach(store|[stores])` Attach a Store or a list of stores, also create `redux` store, so you need to attach all stores before starting a connection with server
 * `connect(url, port)` Connect to server with `url` and `port`
+* `on(event|custom-event, callback)` Listen event
+* `send(custom-event, data)` Send event to server
 
 ### Client - Store
 

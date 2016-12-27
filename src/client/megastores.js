@@ -47,7 +47,12 @@ class Megastores extends BaseMegastores {
             this.connection.on('message', message => {
                 const action = JSON.parse(message);
                 this.trigger('message', action);
-                this.store.dispatch(action);
+
+                if (!!action.event) {
+                    this.trigger(action.event, action.data);
+                } else {
+                    this.store.dispatch(action);
+                }
             });
 
             // Lost connection with server, try to reconnect
@@ -83,6 +88,13 @@ class Megastores extends BaseMegastores {
             // Use store cache
             store.cache.forEach(action => this.connection.send(JSON.stringify(action)));
         });
+    }
+
+    /**
+     * Send message at server
+     */
+    send (event, data) {
+        this.connection.send(JSON.stringify({ event, data }));
     }
 
     /**
