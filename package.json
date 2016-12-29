@@ -1,6 +1,6 @@
 {
   "name": "megastores",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Store manager with realtime exchanges between server and client",
   "main": "src/server/index.js",
   "scripts": {
