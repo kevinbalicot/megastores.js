@@ -14,6 +14,8 @@ todoStore.use((action, oldState, newState, next) => {
     next();
 });
 
+megastore.on('close-server', () => process.exit(0));
+
 megastore.attach(todoStore).listen(8081);
 
 todoStore.subscribe(items => console.log(items));

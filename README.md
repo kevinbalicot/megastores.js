@@ -17,6 +17,14 @@
 $ npm install --save megastores
 ```
 
+## Demo
+
+```
+cd node_modules/megastores && make demo
+```
+
+Go to `http://localhost:8080`
+
 ## How to use it
 ### Server
 
@@ -36,7 +44,7 @@ myStore.subscribe(state => {
 ### Client
 
 ```javascript
-<script src="lib/megastores-client.js">
+<script src="node_modules/megastores/dist/megastores-client.js">
 <script>
     var store = new Store('my-store');
     var megastores = new Megastores();
@@ -163,7 +171,7 @@ megastores.connect('http://localhost', 8080).on('open', () => {
 ### Todolist client
 
 ```javascript
-<script src="lib/megastores-client.js">
+<script src="node_modules/megastores/dist/megastores-client.js">
 
 <ul id="list">
 </ul>
