@@ -1,4 +1,4 @@
-# MEGASTORES.JS
+# MEGASTORES
 
 `megastores` is a store manager with realtime exchanges between client and server
 
