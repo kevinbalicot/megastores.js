@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>Megastores - Store manager with realtime exchanges between server and client.</title>
+        <script src="//cdn.rawgit.com/showdownjs/showdown/1.6.4/dist/showdown.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-okaidia.min.css">
+        <style>
+            #readme h2, #api h2 {
+                margin-top: 50px;
+            }
+
+            #readme p:nth-child(2) {
+                text-align: center;
+            }
+
+            section > h1:first-child {
+                text-align: center;
+            }
+
+            .anchor {
+                opacity: .5;
+            }
+
+            .anchor:hover {
+                opacity: 1;
+            }
+
+            footer {
+                margin: 50px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Megastores</a>
+                </div>
+
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#readme">Read me</a></li>
+                        <li><a href="#api">API</a></li>
+                        <li><a href="#changelog">Changelog</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="//github.com/kevinbalicot/megastores.js">Github</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <section id="readme" class="container"></section>
+        <hr/>
+        <section id="api" class="container"></section>
+        <hr/>
+        <section id="changelog" class="container"></section>
+        <hr/>
+
+        <footer class="container">
+            <a class="pull-right" href="#">Back to top</a>
+            <p>
+                © 2017 megastores - Made by <a href="http://kb-web.fr">Kevin Balicot</a>. Contact kevinbalicot[at]gmail.com<br/>
+                Fork project on <a href="//github.com/kevinbalicot/megastores.js">Github</a><br/>
+                Code released under the <a href="//github.com/kevinbalicot/megastores.js/blob/master/LICENSE.md">MIT</a> License.
+            </p>
+        </footer>
+
+        <script>
+            var req = new XMLHttpRequest();
+            req.open('GET', 'https://raw.githubusercontent.com/kevinbalicot/megastores.js/master/docs/documentations.md', false);
+            req.send(null);
+
+            if (req.status === 200) {
+                var converter = new showdown.Converter({ tables: true });
+                var html = req.responseText.replace(/⏏/gi, '');
+                document.querySelector('#api').innerHTML = '<h1 id="api">API</h1>' + converter.makeHtml(html);
+
+                var tables = document.querySelectorAll('#api table');
+                for (var i = 0; i < tables.length; i++) {
+                    tables[i].className = 'table table-bordered';
+                }
+
+                var readmeTitles = document.querySelectorAll('#api h2, #api h3');
+                for (var i = 0; i < readmeTitles.length; i++) {
+                    readmeTitles[i].innerHTML += ' <a class="anchor" href="#' + readmeTitles[i].id + '">&#182;</a>'
+                }
+            }
+
+            var req = new XMLHttpRequest();
+            req.open('GET', 'https://raw.githubusercontent.com/kevinbalicot/megastores.js/master/README.md', false);
+            req.send(null);
+
+            if (req.status === 200) {
+                var converter = new showdown.Converter();
+                document.querySelector('#readme').innerHTML = converter.makeHtml(req.responseText);
+
+                var apiTitles = document.querySelectorAll('#readme h2, #readme h3');
+                for (var i = 0; i < apiTitles.length; i++) {
+                    apiTitles[i].innerHTML += ' <a class="anchor" href="#' + apiTitles[i].id + '">&#182;</a>'
+                }
+            }
+
+            var req = new XMLHttpRequest();
+            req.open('GET', 'https://raw.githubusercontent.com/kevinbalicot/megastores.js/master/CHANGELOG.md', false);
+            req.send(null);
+
+            if (req.status === 200) {
+                var converter = new showdown.Converter();
+                document.querySelector('#changelog').innerHTML = '<h1 id="changelog">Changelog</h1>' + converter.makeHtml(req.responseText);
+            }
+        </script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
+    </body>
+</html>

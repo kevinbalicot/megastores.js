@@ -1,12 +1,20 @@
-'use strict';
-
 const { combineReducers, createStore, applyMiddleware } = require('redux');
 const EventEmitter = require('./eventEmitter');
 
+/**
+ * BaseMegastores module
+ * @module BaseMegastores
+ */
 class BaseMegastores extends EventEmitter {
 
-    constructor () {
+    /**
+     * @extends EventEmitter
+     *
+     * @alias module:BaseMegastores
+     */
+    constructor() {
         super();
+
         this.reducers = {};
         this.stores = [];
         this.intialState = {};
@@ -17,33 +25,45 @@ class BaseMegastores extends EventEmitter {
 
     /**
      * Subscribe to global store
-     * @param callback
+     * @param {Callable} callback
+     *
+     * @alias module:BaseMegastores
      */
-    subscribe (callback) {
+    subscribe(callback) {
         this.store.subscribe(callback);
     }
 
     /**
      * Dispatch action into global store
-     * @param action
-     * @param client
+     * @param {Object} action
+     * @param {Object} client
+     *
+     * @alias module:BaseMegastores
      */
-    dispatch (action, client = null) {
+    dispatch(action, client = null) {
         this.store.dispatch(action);
     }
 
     /**
      * Get current state of global store
+     *
+     * @return {Object}
+     *
+     * @alias module:BaseMegastores
      */
-    getState () {
+    getState() {
         return this.store.getState();
     }
 
     /**
      * Add store or a list of stores into global store
-     * @param store
+     * @param {Array<Store>|Store} store
+     *
+     * @return {BaseMegastores}
+     *
+     * @alias module:BaseMegastores
      */
-    attach (store) {
+    attach(store) {
         if (Array.isArray(store)) {
             store.forEach(store => {
                 this.stores.push(store);
@@ -64,8 +84,10 @@ class BaseMegastores extends EventEmitter {
 
     /**
      * Create global store
+     *
+     * @alias module:BaseMegastores
      */
-    createStore () {
+    createStore() {
         this.store = createStore(combineReducers(this.reducers), this.intialState);
         this.stores.forEach(store => store.store = this);
     }

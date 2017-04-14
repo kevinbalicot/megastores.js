@@ -1,13 +1,20 @@
-'use strict';
-
 const engine = require('engine.io-client');
 const BaseMegastores = require('./../common/megastores');
 const EventEmitter = require('./../common/eventEmitter');
 
+/**
+ * ClientMegastores module
+ * @module ClientMegastores
+ */
 class Megastores extends BaseMegastores {
-
-    constructor () {
+    /**
+     * @extends BaseMegastores
+     *
+     * @alias module:ClientMegastores
+     */
+    constructor() {
         super();
+
         this.connection = null;
         this.connecting = null;
         this.connected = false;
@@ -15,10 +22,14 @@ class Megastores extends BaseMegastores {
 
     /**
      * Connect to server
-     * @param url
-     * @param port
+     * @param {string} url - Server URI
+     * @param {string|number} [port=8080] - Server uri port
+     *
+     * @return {Megastores}
+     *
+     * @alias module:ClientMegastores
      */
-    connect (url, port = 8080) {
+    connect(url, port = 8080) {
         if (this.store == null) {
             throw new Error(this.ERROR_INSTANTIATE);
         }
@@ -68,10 +79,12 @@ class Megastores extends BaseMegastores {
 
     /**
      * Dispatch action
-     * @param action
-     * @param store
+     * @param {string} action
+     * @param {Store} store
+     *
+     * @alias module:ClientMegastores
      */
-    dispatch (action, store) {
+    dispatch(action, store) {
         // Don't send to server if offline mode or no connection
         if (!!this.connection && !store.options.offline) {
             this.connection.send(JSON.stringify(action));
@@ -82,8 +95,10 @@ class Megastores extends BaseMegastores {
 
     /**
      * Synchronize data with server when reconnection
+     *
+     * @alias module:ClientMegastores
      */
-    synchronize () {
+    synchronize() {
         this.stores.forEach(store => {
             // Use store cache
             store.cache.forEach(action => this.connection.send(JSON.stringify(action)));
@@ -92,17 +107,23 @@ class Megastores extends BaseMegastores {
 
     /**
      * Send message at server
+     * @param {string} event
+     * @param {Object} data
+     *
+     * @alias module:ClientMegastores
      */
-    send (event, data) {
+    send(event, data) {
         this.connection.send(JSON.stringify({ event, data }));
     }
 
     /**
      * Try to reconnecte
-     * @param url
-     * @param port
+     * @param {string} url
+     * @param {port} port
+     *
+     * @alias module:ClientMegastores
      */
-    listenNewConnection (url, port) {
+    listenNewConnection(url, port) {
         this.connecting = setInterval(() => {
             this.connect(url, port);
         }, 10000);

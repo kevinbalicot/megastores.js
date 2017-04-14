@@ -1,11 +1,11 @@
 # MEGASTORES
 
-`megastores` is a store manager with realtime exchanges between client and server
+Store manager with realtime exchanges between client and server
 
 ## Dependances
 
-* redux https://github.com/reactjs/redux
-* engine.io https://github.com/socketio/engine.io
+* redux [https://github.com/reactjs/redux](https://github.com/reactjs/redux)
+* engine.io [https://github.com/socketio/engine.io](https://github.com/socketio/engine.io)
 
 ## Requirement
 
@@ -16,14 +16,6 @@
 ```
 $ npm install --save megastores
 ```
-
-## Demo
-
-```
-cd node_modules/megastores && make demo
-```
-
-Go to `http://localhost:8080`
 
 ## How to use it
 ### Server
@@ -233,12 +225,11 @@ todoStore.use((action, oldState, newState, next) => {
     next();
 });
 ```
-
 ---------------------
 
 ## License
 
-MIT
+[MIT](https://github.com/kevinbalicot/megastores.js/blob/master/LICENSE.md)
 
 ## Test
 

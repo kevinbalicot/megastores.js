@@ -1,15 +1,21 @@
-'use strict';
-
 const BaseStore = require('./../common/store');
 
+/**
+ * ClientStore module
+ * @module ClientStore
+ */
 class Store extends BaseStore {
 
     /**
-     * @param name
-     * @param initialState
-     * @param options
+     * @extends BaseStore
+     * @param {string} name
+     * @param {Array} [initialState=[]]
+     * @param {Object} [options={}]
+     * @param {boolean} [options.enableCache]
+     *
+     * @alias module:ClientStore
      */
-    constructor (name, intialState = [], options = {}) {
+    constructor(name, intialState = [], options = {}) {
         super(name, intialState, options);
 
         this.cache = [];
@@ -23,10 +29,16 @@ class Store extends BaseStore {
 
     /**
      * Reducer, synchronize from server
-     * @param state
-     * @param action
+     * @param {Array} [state=[]]
+     * @param {Object} [action={}]
+     * @param {string} [action.type]
+     * @param {Object} [action.payload]
+     *
+     * @return {*}
+     *
+     * @alias module:ClientStore
      */
-    reducer (state = [], action) {
+    reducer(state = [], action = {}) {
         switch (action.type) {
             // Only server call this action
             case this.SYNCHRONIZE_ALL_ITEMS:
@@ -43,16 +55,20 @@ class Store extends BaseStore {
 
     /**
      * Clear cache and local storage cache
+     *
+     * @alias module:ClientStore
      */
-    clearCache () {
+    clearCache() {
         this.cache = [];
         localStorage.removeItem(`state_${this.name}`);
     }
 
     /**
      * Enable offline, no interaction with server
+     *
+     * @alias module:ClientStore
      */
-    enableOfflineMode () {
+    enableOfflineMode() {
         // merge initialState with local storage state
         let offlineState = JSON.parse(localStorage.getItem(`state_${this.name}`));
         if (!!offlineState) {
@@ -68,9 +84,11 @@ class Store extends BaseStore {
 
     /**
      * Put item or property into state
-     * @param item
+     * @param {Object} item
+     *
+     * @alias module:ClientStore
      */
-    put (item) {
+    put(item) {
         // Cache action if there are no connection
         if (!this.options.offline && !this.store.connected && this.enableCache) {
             this.cache.push({ type: this.ADD_ITEM, payload: item });
@@ -81,13 +99,15 @@ class Store extends BaseStore {
 
     /**
      * Update item or property
-     * @param index
-     * @param item
+     * @param {number} index
+     * @param {Object} item
+     *
+     * @alias module:ClientStore
      */
-    update (index, item) {
+    update(index, item) {
         // Cache action if there are no connection
         if (!this.options.offline && !this.store.connected && this.enableCache) {
-            this.cache.push({ type: this.UPDATE_ITEM, payload: item, index: index });
+            this.cache.push({ type: this.UPDATE_ITEM, payload: item, index });
         }
 
         super.update(index, item);
@@ -95,13 +115,15 @@ class Store extends BaseStore {
 
     /**
      * Remove item or property
-     * @param index
-     * @param item
+     * @param {number} index
+     * @param {Object} item
+     *
+     * @alias module:ClientStore
      */
-    remove (index, item) {
+    remove(index, item) {
         // Cache action if there are no connection
         if (!this.options.offline && !this.store.connected && this.enableCache) {
-            this.cache.push({ type: this.DELETE_ITEM, payload: item, index: index });
+            this.cache.push({ type: this.DELETE_ITEM, payload: item, index });
         }
 
         super.remove(index, item);

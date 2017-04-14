@@ -1,3 +1,20 @@
+/**
+ * Queue handle middlewares
+ * @module compose
+ */
+
+ /**
+  * @param {Object} action
+  * @param {string} action.type
+  * @param {Object} action.payload
+  * @param {Array|Object} oldState
+  * @param {Array|Object} newState
+  * @param {Array<Object>} middlewares
+  *
+  * @return {*}
+  *
+  * @alias module:compose
+  */
 module.exports = (action, oldState, newState, middlewares) => {
     let next = () => {};
     let i = middlewares.length;

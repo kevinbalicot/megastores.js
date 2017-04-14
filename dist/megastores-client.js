@@ -5437,10 +5437,7 @@ var Megastores = require('./megastores');
 window.Store = Store;
 window.Megastores = Megastores;
 
-module.exports = {
-    Store: Store,
-    Megastores: Megastores
-};
+module.exports = { Store: Store, Megastores: Megastores };
 
 },{"./megastores":54,"./store":55}],54:[function(require,module,exports){
 'use strict';
@@ -5457,9 +5454,19 @@ var engine = require('engine.io-client');
 var BaseMegastores = require('./../common/megastores');
 var EventEmitter = require('./../common/eventEmitter');
 
+/**
+ * ClientMegastores module
+ * @module ClientMegastores
+ */
+
 var Megastores = function (_BaseMegastores) {
     _inherits(Megastores, _BaseMegastores);
 
+    /**
+     * @extends BaseMegastores
+     *
+     * @alias module:ClientMegastores
+     */
     function Megastores() {
         _classCallCheck(this, Megastores);
 
@@ -5473,8 +5480,12 @@ var Megastores = function (_BaseMegastores) {
 
     /**
      * Connect to server
-     * @param url
-     * @param port
+     * @param {string} url - Server URI
+     * @param {string|number} [port=8080] - Server uri port
+     *
+     * @return {Megastores}
+     *
+     * @alias module:ClientMegastores
      */
 
 
@@ -5534,8 +5545,10 @@ var Megastores = function (_BaseMegastores) {
 
         /**
          * Dispatch action
-         * @param action
-         * @param store
+         * @param {string} action
+         * @param {Store} store
+         *
+         * @alias module:ClientMegastores
          */
 
     }, {
@@ -5551,6 +5564,8 @@ var Megastores = function (_BaseMegastores) {
 
         /**
          * Synchronize data with server when reconnection
+         *
+         * @alias module:ClientMegastores
          */
 
     }, {
@@ -5568,6 +5583,10 @@ var Megastores = function (_BaseMegastores) {
 
         /**
          * Send message at server
+         * @param {string} event
+         * @param {Object} data
+         *
+         * @alias module:ClientMegastores
          */
 
     }, {
@@ -5578,8 +5597,10 @@ var Megastores = function (_BaseMegastores) {
 
         /**
          * Try to reconnecte
-         * @param url
-         * @param port
+         * @param {string} url
+         * @param {port} port
+         *
+         * @alias module:ClientMegastores
          */
 
     }, {
@@ -5613,13 +5634,22 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var BaseStore = require('./../common/store');
 
+/**
+ * ClientStore module
+ * @module ClientStore
+ */
+
 var Store = function (_BaseStore) {
     _inherits(Store, _BaseStore);
 
     /**
-     * @param name
-     * @param initialState
-     * @param options
+     * @extends BaseStore
+     * @param {string} name
+     * @param {Array} [initialState=[]]
+     * @param {Object} [options={}]
+     * @param {boolean} [options.enableCache]
+     *
+     * @alias module:ClientStore
      */
     function Store(name) {
         var intialState = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
@@ -5641,8 +5671,14 @@ var Store = function (_BaseStore) {
 
     /**
      * Reducer, synchronize from server
-     * @param state
-     * @param action
+     * @param {Array} [state=[]]
+     * @param {Object} [action={}]
+     * @param {string} [action.type]
+     * @param {Object} [action.payload]
+     *
+     * @return {*}
+     *
+     * @alias module:ClientStore
      */
 
 
@@ -5652,7 +5688,7 @@ var Store = function (_BaseStore) {
             var _this2 = this;
 
             var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-            var action = arguments[1];
+            var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
             switch (action.type) {
                 // Only server call this action
@@ -5670,6 +5706,8 @@ var Store = function (_BaseStore) {
 
         /**
          * Clear cache and local storage cache
+         *
+         * @alias module:ClientStore
          */
 
     }, {
@@ -5681,6 +5719,8 @@ var Store = function (_BaseStore) {
 
         /**
          * Enable offline, no interaction with server
+         *
+         * @alias module:ClientStore
          */
 
     }, {
@@ -5703,7 +5743,9 @@ var Store = function (_BaseStore) {
 
         /**
          * Put item or property into state
-         * @param item
+         * @param {Object} item
+         *
+         * @alias module:ClientStore
          */
 
     }, {
@@ -5719,8 +5761,10 @@ var Store = function (_BaseStore) {
 
         /**
          * Update item or property
-         * @param index
-         * @param item
+         * @param {number} index
+         * @param {Object} item
+         *
+         * @alias module:ClientStore
          */
 
     }, {
@@ -5736,8 +5780,10 @@ var Store = function (_BaseStore) {
 
         /**
          * Remove item or property
-         * @param index
-         * @param item
+         * @param {number} index
+         * @param {Object} item
+         *
+         * @alias module:ClientStore
          */
 
     }, {
@@ -5760,6 +5806,23 @@ module.exports = Store;
 },{"./../common/store":59}],56:[function(require,module,exports){
 "use strict";
 
+/**
+ * Queue handle middlewares
+ * @module compose
+ */
+
+/**
+ * @param {Object} action
+ * @param {string} action.type
+ * @param {Object} action.payload
+ * @param {Array|Object} oldState
+ * @param {Array|Object} newState
+ * @param {Array<Object>} middlewares
+ *
+ * @return {*}
+ *
+ * @alias module:compose
+ */
 module.exports = function (action, oldState, newState, middlewares) {
     var next = function next() {};
     var i = middlewares.length;
@@ -5772,12 +5835,16 @@ module.exports = function (action, oldState, newState, middlewares) {
 };
 
 },{}],57:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * EventEmitter module
+ * @module EventEmitter
+ */
 var EventEmitter = function () {
     function EventEmitter() {
         _classCallCheck(this, EventEmitter);
@@ -5787,58 +5854,62 @@ var EventEmitter = function () {
 
     /**
      * Add event listener
-     * @param event
-     * @param callback
-     * @param context
+     * @param {string} event
+     * @param {Callable} callback
+     * @param {*} context
+     *
+     * @return {EventEmitter}
+     *
+     * @alias module:EventEmitter
      */
 
 
     _createClass(EventEmitter, [{
-        key: 'on',
+        key: "on",
         value: function on(event, callback, context) {
             if (!this.listeners[event]) {
                 this.listeners[event] = [];
             }
 
-            this.listeners[event].push({
-                once: false,
-                callback: callback,
-                context: context
-            });
+            this.listeners[event].push({ once: false, callback: callback, context: context });
 
             return this;
         }
 
         /**
          * Add event listener will call one time
-         * @param event
-         * @param callback
-         * @param context
+         * @param {string} event
+         * @param {Callable} callback
+         * @param {*} context
+         *
+         * @return {EventEmitter}
+         *
+         * @alias module:EventEmitter
          */
 
     }, {
-        key: 'once',
+        key: "once",
         value: function once(event, callback, context) {
             if (!this.listeners[event]) {
                 this.listeners[event] = [];
             }
 
-            this.listeners[event].push({
-                once: true,
-                callback: callback,
-                context: context
-            });
+            this.listeners[event].push({ once: true, callback: callback, context: context });
 
             return this;
         }
 
         /**
          * Delete event listeners
-         * @param event
+         * @param {string} event
+         *
+         * @return {EventEmitter}
+         *
+         * @alias module:EventEmitter
          */
 
     }, {
-        key: 'off',
+        key: "off",
         value: function off(event) {
             if (!!this.listeners[event]) {
                 delete this.listeners[event];
@@ -5849,12 +5920,16 @@ var EventEmitter = function () {
 
         /**
          * Call every listener for event
-         * @param event
-         * @param data
+         * @param {string} event
+         * @param {Object} [data={}]
+         *
+         * @return {EventEmitter}
+         *
+         * @alias module:EventEmitter
          */
 
     }, {
-        key: 'trigger',
+        key: "trigger",
         value: function trigger(event) {
             var _this = this;
 
@@ -5900,9 +5975,19 @@ var _require = require('redux'),
 
 var EventEmitter = require('./eventEmitter');
 
+/**
+ * BaseMegastores module
+ * @module BaseMegastores
+ */
+
 var BaseMegastores = function (_EventEmitter) {
     _inherits(BaseMegastores, _EventEmitter);
 
+    /**
+     * @extends EventEmitter
+     *
+     * @alias module:BaseMegastores
+     */
     function BaseMegastores() {
         _classCallCheck(this, BaseMegastores);
 
@@ -5919,7 +6004,9 @@ var BaseMegastores = function (_EventEmitter) {
 
     /**
      * Subscribe to global store
-     * @param callback
+     * @param {Callable} callback
+     *
+     * @alias module:BaseMegastores
      */
 
 
@@ -5931,8 +6018,10 @@ var BaseMegastores = function (_EventEmitter) {
 
         /**
          * Dispatch action into global store
-         * @param action
-         * @param client
+         * @param {Object} action
+         * @param {Object} client
+         *
+         * @alias module:BaseMegastores
          */
 
     }, {
@@ -5945,6 +6034,10 @@ var BaseMegastores = function (_EventEmitter) {
 
         /**
          * Get current state of global store
+         *
+         * @return {Object}
+         *
+         * @alias module:BaseMegastores
          */
 
     }, {
@@ -5955,7 +6048,11 @@ var BaseMegastores = function (_EventEmitter) {
 
         /**
          * Add store or a list of stores into global store
-         * @param store
+         * @param {Array<Store>|Store} store
+         *
+         * @return {BaseMegastores}
+         *
+         * @alias module:BaseMegastores
          */
 
     }, {
@@ -5983,6 +6080,8 @@ var BaseMegastores = function (_EventEmitter) {
 
         /**
          * Create global store
+         *
+         * @alias module:BaseMegastores
          */
 
     }, {
@@ -6011,13 +6110,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var compose = require('./compose');
 
+/**
+ * BaseStore module
+ * @module BaseStore
+ */
+
 var BaseStore = function () {
 
     /**
      * Base store
-     * @param name
-     * @param initialState
-     * @param options
+     * @param {string} name
+     * @param {Array} [initialState=[]]
+     * @param {Object} [options={}]
+     *
+     * @alias module:BaseStore
      */
     function BaseStore(name) {
         var intialState = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
@@ -6043,8 +6149,14 @@ var BaseStore = function () {
 
     /**
      * Reducer, modify current state depends of action
-     * @param state
-     * @param action
+     * @param {Array} [state=[]]
+     * @param {Object} [action={}]
+     * @param {string} [action.type]
+     * @param {Object} [action.payload]
+     *
+     * @return {*}
+     *
+     * @alias module:Store
      */
 
 
@@ -6052,7 +6164,7 @@ var BaseStore = function () {
         key: 'reducer',
         value: function reducer() {
             var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-            var action = arguments[1];
+            var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
             var newState = this.createNewState(state);
             var edited = false;
@@ -6084,7 +6196,12 @@ var BaseStore = function () {
 
         /**
          * Private method to create new state from a state
-         * @param state
+         * @protected
+         * @param {Object} state
+         *
+         * @return {Array|Object}
+         *
+         * @alias module:BaseStore
          */
 
     }, {
@@ -6099,8 +6216,12 @@ var BaseStore = function () {
 
         /**
          * Private method to merge item or property into state
-         * @param state
-         * @param item
+         * @param {Object} state
+         * @param {Object} item
+         *
+         * @return {Array|Object}
+         *
+         * @alias module:BaseStore
          */
 
     }, {
@@ -6115,22 +6236,31 @@ var BaseStore = function () {
 
         /**
          * Private method to update item or property of state
-         * @param state
-         * @param index
-         * @param item
+         * @param {Object} state
+         * @param {number} index
+         * @param {Object} item
+         *
+         * @return {Object} state
+         *
+         * @alias module:BaseStore
          */
 
     }, {
         key: 'edit',
         value: function edit(state, index, item) {
             state[index] = item;
+
             return state;
         }
 
         /**
          * Private method to delete item or property of state
-         * @param state
-         * @param index
+         * @param {Object} state
+         * @param {number} index
+         *
+         * @return {Object} state
+         *
+         * @alias module:BaseStore
          */
 
     }, {
@@ -6147,9 +6277,13 @@ var BaseStore = function () {
 
         /**
          * Dispatch action at middelwares
-         * @param action
-         * @param oldState
-         * @param newState
+         * @param {Object} [action={}]
+         * @param {string} [action.type]
+         * @param {Object} [action.payload]
+         * @param {Object} oldState
+         * @param {Object} newState
+         *
+         * @alias module:BaseStore
          */
 
     }, {
@@ -6160,7 +6294,9 @@ var BaseStore = function () {
 
         /**
          * Add middleware
-         * @param callback
+         * @param {Callable} callback
+         *
+         * @alias module:BaseStore
          */
 
     }, {
@@ -6171,8 +6307,12 @@ var BaseStore = function () {
 
         /**
          * Put item or property
-         * @param item
+         * @param {Object} item
          * @throw Error
+         *
+         * @return {*}
+         *
+         * @alias module:BaseStore
          */
 
     }, {
@@ -6187,9 +6327,13 @@ var BaseStore = function () {
 
         /**
          * Find item by key, value or find property by key
-         * @param key
-         * @param value
+         * @param {string} key
+         * @param {*} value
          * @throw Error
+         *
+         * @return {Object|null}
+         *
+         * @alias module:BaseStore
          */
 
     }, {
@@ -6212,9 +6356,13 @@ var BaseStore = function () {
 
         /**
          * Update item or property
-         * @param index
-         * @param item
+         * @param {number} index
+         * @param {Object} item
          * @throw Error
+         *
+         * @return {*}
+         *
+         * @alias module:BaseStore
          */
 
     }, {
@@ -6229,9 +6377,12 @@ var BaseStore = function () {
 
         /**
          * Remove item or property
-         * @param index
-         * @param item
+         * @param {number|string} index
          * @throw Error
+         *
+         * @return {*}
+         *
+         * @alias module:BaseStore
          */
 
     }, {
@@ -6246,8 +6397,12 @@ var BaseStore = function () {
 
         /**
          * Subscribe to state changes
-         * @param callback
+         * @param {Callable} callback
          * @throw Error
+         *
+         * @return {*}
+         *
+         * @alias module:BaseStore
          */
 
     }, {
@@ -6260,12 +6415,16 @@ var BaseStore = function () {
             }
 
             return this.store.subscribe(function () {
-                callback(_this.items);
+                return callback(_this.items);
             });
         }
 
         /**
          * Get store's state
+         *
+         * @return {Object|Array}
+         *
+         * @alias module:BaseStore
          */
 
     }, {

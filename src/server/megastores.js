@@ -1,10 +1,16 @@
-'use strict';
-
 const engine = require('engine.io');
 const BaseMegastores = require('./../common/megastores');
 
+/**
+ * ServerMegastores module
+ * @module ServerMegastores
+ */
 class Megastores extends BaseMegastores {
-
+    /**
+     * @extends BaseMegastores
+     *
+     * @alias module:ServerMegastores
+     */
     constructor () {
         super();
         this.server = null;
@@ -12,9 +18,13 @@ class Megastores extends BaseMegastores {
 
     /**
      * Listen on port
-     * @param port
+     * @param {number|string} [port=8080]
+     *
+     * @return {Megastores}
+     *
+     * @alias module:ServerMegastores
      */
-    listen (port = 8080) {
+    listen(port = 8080) {
         if (this.store == null) {
             throw new Error(this.ERROR_INSTANTIATE);
         }
@@ -47,22 +57,26 @@ class Megastores extends BaseMegastores {
 
     /**
      * Synchronize stores with clients
-     * @param client
+     * @param {Object} client
+     *
+     * @alias module:ServerMegastores
      */
-    synchronize (client) {
+    synchronize(client) {
         this.stores.forEach(store => {
-            let data = { type: store.SYNCHRONIZE_ALL_ITEMS, payload: store.items };
+            const data = { type: store.SYNCHRONIZE_ALL_ITEMS, payload: store.items };
             client.send(JSON.stringify(data));
         });
     }
 
     /**
      * Broadcast client actions dispatched
-     * @param action
-     * @param fromClient
+     * @param {string} action
+     * @param {Object} [fromClient=null]
      * @throw Error
+     *
+     * @alias module:ServerMegastores
      */
-    broadcast (action, fromClient = null) {
+    broadcast(action, fromClient = null) {
         if (this.server == null) {
             throw new Error(this.ERROR_INSTANTIATE);
         }
@@ -78,10 +92,12 @@ class Megastores extends BaseMegastores {
 
     /**
      * Dispatch action into global store and broadcast it
-     * @param action
-     * @param client
+     * @param {string} action
+     * @param {Object} [client=null]
+     *
+     * @alias module:ServerMegastores
      */
-    dispatch (action, client = null) {
+    dispatch(action, client = null) {
         if (!!this.server) {
             this.broadcast(action, client);
         }
@@ -91,8 +107,13 @@ class Megastores extends BaseMegastores {
 
     /**
      * Send message to client or all client
+     * @param {string} event
+     * @param {Object} data
+     * @param {Object} [client=null]
+     *
+     * @alias module:ServerMegastores
      */
-    send (event, data, client = null) {
+    send(event, data, client = null) {
         if (!!client) {
             client.send(JSON.stringify({ event, data }));
         } else {

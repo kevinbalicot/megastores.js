@@ -1,16 +1,20 @@
-'use strict';
-
 const compose = require('./compose');
 
+/**
+ * BaseStore module
+ * @module BaseStore
+ */
 class BaseStore {
 
     /**
      * Base store
-     * @param name
-     * @param initialState
-     * @param options
+     * @param {string} name
+     * @param {Array} [initialState=[]]
+     * @param {Object} [options={}]
+     *
+     * @alias module:BaseStore
      */
-    constructor (name, intialState = [], options = {}) {
+    constructor(name, intialState = [], options = {}) {
         this.name = name;
         this.options = options;
         this.store = null;
@@ -29,10 +33,16 @@ class BaseStore {
 
     /**
      * Reducer, modify current state depends of action
-     * @param state
-     * @param action
+     * @param {Array} [state=[]]
+     * @param {Object} [action={}]
+     * @param {string} [action.type]
+     * @param {Object} [action.payload]
+     *
+     * @return {*}
+     *
+     * @alias module:Store
      */
-    reducer (state = [], action) {
+    reducer(state = [], action = {}) {
         let newState = this.createNewState(state);
         let edited = false;
 
@@ -63,9 +73,14 @@ class BaseStore {
 
     /**
      * Private method to create new state from a state
-     * @param state
+     * @protected
+     * @param {Object} state
+     *
+     * @return {Array|Object}
+     *
+     * @alias module:BaseStore
      */
-    createNewState (state) {
+    createNewState(state) {
         if (Array.isArray(state)) {
             return [].concat(state);
         }
@@ -75,10 +90,14 @@ class BaseStore {
 
     /**
      * Private method to merge item or property into state
-     * @param state
-     * @param item
+     * @param {Object} state
+     * @param {Object} item
+     *
+     * @return {Array|Object}
+     *
+     * @alias module:BaseStore
      */
-    merge (state, item) {
+    merge(state, item) {
         if (Array.isArray(state)) {
             return state.concat(item);
         }
@@ -88,21 +107,30 @@ class BaseStore {
 
     /**
      * Private method to update item or property of state
-     * @param state
-     * @param index
-     * @param item
+     * @param {Object} state
+     * @param {number} index
+     * @param {Object} item
+     *
+     * @return {Object} state
+     *
+     * @alias module:BaseStore
      */
-    edit (state, index, item) {
+    edit(state, index, item) {
         state[index] = item;
+
         return state;
     }
 
     /**
      * Private method to delete item or property of state
-     * @param state
-     * @param index
+     * @param {Object} state
+     * @param {number} index
+     *
+     * @return {Object} state
+     *
+     * @alias module:BaseStore
      */
-    delete (state, index) {
+    delete(state, index) {
         if (Array.isArray(state)) {
             state.splice(index, 1);
         } else {
@@ -114,28 +142,38 @@ class BaseStore {
 
     /**
      * Dispatch action at middelwares
-     * @param action
-     * @param oldState
-     * @param newState
+     * @param {Object} [action={}]
+     * @param {string} [action.type]
+     * @param {Object} [action.payload]
+     * @param {Object} oldState
+     * @param {Object} newState
+     *
+     * @alias module:BaseStore
      */
-    dispatchMiddelwares (action, oldState, newState) {
+    dispatchMiddelwares(action, oldState, newState) {
         compose(action, oldState, newState, this.middlewares)();
     }
 
     /**
      * Add middleware
-     * @param callback
+     * @param {Callable} callback
+     *
+     * @alias module:BaseStore
      */
-    use (callback) {
+    use(callback) {
         this.middlewares.push({ callback });
     }
 
     /**
      * Put item or property
-     * @param item
+     * @param {Object} item
      * @throw Error
+     *
+     * @return {*}
+     *
+     * @alias module:BaseStore
      */
-    put (item) {
+    put(item) {
         if (!this.store) {
             throw new Error(this.ERROR_INSTANTIATE);
         }
@@ -145,11 +183,15 @@ class BaseStore {
 
     /**
      * Find item by key, value or find property by key
-     * @param key
-     * @param value
+     * @param {string} key
+     * @param {*} value
      * @throw Error
+     *
+     * @return {Object|null}
+     *
+     * @alias module:BaseStore
      */
-    find (key, value = null) {
+    find(key, value = null) {
         if (!this.store) {
             throw new Error(this.ERROR_INSTANTIATE);
         }
@@ -163,51 +205,64 @@ class BaseStore {
 
     /**
      * Update item or property
-     * @param index
-     * @param item
+     * @param {number} index
+     * @param {Object} item
      * @throw Error
+     *
+     * @return {*}
+     *
+     * @alias module:BaseStore
      */
-    update (index, item) {
+    update(index, item) {
         if (!this.store) {
             throw new Error(this.ERROR_INSTANTIATE);
         }
 
-        return this.store.dispatch({ type: this.UPDATE_ITEM, payload: item, index: index }, this);
+        return this.store.dispatch({ type: this.UPDATE_ITEM, payload: item, index }, this);
     }
 
     /**
      * Remove item or property
-     * @param index
-     * @param item
+     * @param {number|string} index
      * @throw Error
+     *
+     * @return {*}
+     *
+     * @alias module:BaseStore
      */
-    remove (index) {
+    remove(index) {
         if (!this.store) {
             throw new Error(this.ERROR_INSTANTIATE);
         }
 
-        return this.store.dispatch({ type: this.DELETE_ITEM, index: index }, this);
+        return this.store.dispatch({ type: this.DELETE_ITEM, index }, this);
     }
 
     /**
      * Subscribe to state changes
-     * @param callback
+     * @param {Callable} callback
      * @throw Error
+     *
+     * @return {*}
+     *
+     * @alias module:BaseStore
      */
-    subscribe (callback) {
+    subscribe(callback) {
         if (!this.store) {
             throw new Error(this.ERROR_INSTANTIATE);
         }
 
-        return this.store.subscribe(() => {
-            callback(this.items);
-        });
+        return this.store.subscribe(() => callback(this.items));
     }
 
     /**
      * Get store's state
+     *
+     * @return {Object|Array}
+     *
+     * @alias module:BaseStore
      */
-    get items () {
+    get items() {
         if (!!this.store) {
             return this.store.getState()[this.name];
         }

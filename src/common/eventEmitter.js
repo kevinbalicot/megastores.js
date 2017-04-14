@@ -1,56 +1,61 @@
-'use strict';
-
+/**
+ * EventEmitter module
+ * @module EventEmitter
+ */
 class EventEmitter {
-
-    constructor () {
+    constructor() {
         this.listeners = [];
     }
 
     /**
      * Add event listener
-     * @param event
-     * @param callback
-     * @param context
+     * @param {string} event
+     * @param {Callable} callback
+     * @param {*} context
+     *
+     * @return {EventEmitter}
+     *
+     * @alias module:EventEmitter
      */
-    on (event, callback, context) {
+    on(event, callback, context) {
         if (!this.listeners[event]) {
             this.listeners[event] = [];
         }
 
-        this.listeners[event].push({
-            once: false,
-            callback: callback,
-            context: context
-        });
+        this.listeners[event].push({ once: false, callback, context });
 
         return this;
     }
 
     /**
      * Add event listener will call one time
-     * @param event
-     * @param callback
-     * @param context
+     * @param {string} event
+     * @param {Callable} callback
+     * @param {*} context
+     *
+     * @return {EventEmitter}
+     *
+     * @alias module:EventEmitter
      */
-    once (event, callback, context) {
+    once(event, callback, context) {
         if (!this.listeners[event]) {
             this.listeners[event] = [];
         }
 
-        this.listeners[event].push({
-            once: true,
-            callback: callback,
-            context: context
-        });
+        this.listeners[event].push({ once: true, callback, context });
 
         return this;
     }
 
     /**
      * Delete event listeners
-     * @param event
+     * @param {string} event
+     *
+     * @return {EventEmitter}
+     *
+     * @alias module:EventEmitter
      */
-    off (event) {
+    off(event) {
         if (!!this.listeners[event]) {
             delete this.listeners[event];
         }
@@ -60,10 +65,14 @@ class EventEmitter {
 
     /**
      * Call every listener for event
-     * @param event
-     * @param data
+     * @param {string} event
+     * @param {Object} [data={}]
+     *
+     * @return {EventEmitter}
+     *
+     * @alias module:EventEmitter
      */
-    trigger (event, data = {}) {
+    trigger(event, data = {}) {
         if (!!this.listeners[event]) {
             let i = 0;
             this.listeners[event].forEach(listener => {
