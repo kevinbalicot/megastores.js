@@ -1,3 +1,13 @@
+<a name="1.2.1"></a>
+## [1.2.1](https://github.com/kevinbalicot/megastores.js/compare/v1.2.0...v1.2.1) (2017-08-24)
+
+
+### Bug Fixes
+
+* **build:** Add lib building after install ([2456e2c](https://github.com/kevinbalicot/megastores.js/commit/2456e2c))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/kevinbalicot/megastores.js/compare/v1.1.0...v1.2.0) (2017-08-24)
 
