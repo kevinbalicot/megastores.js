@@ -48,7 +48,7 @@ class Megastores extends BaseMegastores {
             });
 
             client.on('close', () => {
-                this.trigger('close');
+                this.trigger('close', client);
             });
         });
 

@@ -12,7 +12,7 @@ test: node_modules
 	$(BIN_DIR)/mocha ./test
 
 doc: node_modules
-	$(BIN_DIR)/jsdoc2md src/**/*.js > docs/documentations.md
+	$(BIN_DIR)/jsdoc2md --param-list-format list src/**/*.js > docs/documentations.md
 
 changelog: node_modules
 	$(BIN_DIR)/conventional-changelog -p angular -i CHANGELOG.md -s

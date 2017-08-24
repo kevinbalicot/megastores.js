@@ -3,9 +3,6 @@
     <head>
         <meta charset="utf-8"/>
         <title>Megastores - Store manager with realtime exchanges between server and client.</title>
-        <script src="//cdn.rawgit.com/showdownjs/showdown/1.6.4/dist/showdown.min.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css">
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-okaidia.min.css">
         <style>
             #readme h2, #api h2 {
                 margin-top: 50px;
@@ -15,7 +12,7 @@
                 text-align: center;
             }
 
-            section > h1:first-child {
+            #readme > h1:first-child {
                 text-align: center;
             }
 
@@ -26,92 +23,192 @@
             .anchor:hover {
                 opacity: 1;
             }
-
-            footer {
-                margin: 50px 0;
-            }
         </style>
     </head>
     <body>
-        <nav class="navbar navbar-default">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Megastores</a>
-                </div>
-
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="#readme">Read me</a></li>
-                        <li><a href="#api">API</a></li>
-                        <li><a href="#changelog">Changelog</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="//github.com/kevinbalicot/megastores.js">Github</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <section id="readme" class="container"></section>
-        <hr/>
-        <section id="api" class="container"></section>
-        <hr/>
-        <section id="changelog" class="container"></section>
-        <hr/>
-
-        <footer class="container">
-            <a class="pull-right" href="#">Back to top</a>
-            <p>
-                © 2017 megastores - Made by <a href="http://kb-web.fr">Kevin Balicot</a>. Contact kevinbalicot[at]gmail.com<br/>
-                Fork project on <a href="//github.com/kevinbalicot/megastores.js">Github</a><br/>
-                Code released under the <a href="//github.com/kevinbalicot/megastores.js/blob/master/LICENSE.md">MIT</a> License.
-            </p>
-        </footer>
-
         <script>
-            var req = new XMLHttpRequest();
-            req.open('GET', 'https://raw.githubusercontent.com/kevinbalicot/megastores.js/master/docs/documentations.md', false);
-            req.send(null);
+            /**
+             * @param {Object} options - Options
+             * @param {string} options.name - Project name
+             * @param {string} options.readme - REAMDE url (markdown file)
+             * @param {string} options.style - Style name (from bootstrap watch @see https://www.bootstrapcdn.com/bootswatch/)
+             * @param {string} [options.github] - Github url
+             * @param {string} [options.api] - API reference url (markdown file)
+             * @param {string} [options.changelog] - Changelog url (markdown file)
+             * @param {string} [options.license] - License url
+             * @param {Object} options.author - Project author
+             * @param {string} options.author.name - Author name
+             * @param {string} [options.author.url] - Author url website
+             * @param {string} [options.author.email] - Author email
+             * @param {HTMLELement} [container] - HTML target container
+             */
+            var createDocumentation = function(options, container) {
+                container = container || document.body;
 
-            if (req.status === 200) {
-                var converter = new showdown.Converter({ tables: true });
-                var html = req.responseText.replace(/⏏/gi, '');
-                document.querySelector('#api').innerHTML = '<h1 id="api">API</h1>' + converter.makeHtml(html);
+                var createNav = function(options) {
+                    var nav = document.createElement('nav');
+                    var navContainer = document.createElement('div');
+                    var navListContainer = document.createElement('div');
+                    var navList = document.createElement('ul');
 
-                var tables = document.querySelectorAll('#api table');
-                for (var i = 0; i < tables.length; i++) {
-                    tables[i].className = 'table table-bordered';
+                    nav.className = 'navbar navbar-default';
+                    navContainer.className = 'container';
+                    navListContainer.className = 'collapse navbar-collapse';
+                    navList.className = 'nav navbar-nav';
+
+                    if (!!options.name) {
+                        navContainer.innerHTML += '<div class="navbar-header"><a class="navbar-brand" href="#">' + options.name + '</a></div>';
+                    }
+
+                    if (!!options.readme) {
+                        navList.innerHTML += '<li><a href="#readme">Read me</a></li>';
+                    }
+
+                    if (!!options.api) {
+                        navList.innerHTML += '<li><a href="#api">API</a></li>';
+                    }
+
+                    if (!!options.changelog) {
+                        navList.innerHTML += '<li><a href="#changelog">Changelog</a></li>';
+                    }
+
+                    navListContainer.appendChild(navList);
+
+                    if (!!options.github) {
+                        navListContainer.innerHTML += '<ul class="nav navbar-nav navbar-right"><li><a href="' + options.github + '">Github</a></li></ul>';
+                    }
+
+                    navContainer.appendChild(navListContainer);
+                    nav.appendChild(navContainer);
+
+                    return nav;
+                };
+
+                var createFooter = function(options) {
+                    var footer = document.createElement('footer');
+                    var footerContent = document.createElement('p');
+                    footer.className = 'container';
+                    footer.innerHTML = '<a class="pull-right" href="#">Back to top</a>';
+                    footer.style.margin = '50px auto';
+
+                    footerContent.innerHTML += '© ' + (new Date()).getFullYear() + ' ' + (options.name ? options.name : '');
+                    if (!!options.author) {
+                        footerContent.innerHTML += ' - Made by <a href="' + options.author.url +'">' + options.author.name +'</a>.' + (options.author.email ? ' Contact ' + options.author.email : '') + '<br/>';
+                    }
+
+                    if (!!options.github) {
+                        footerContent.innerHTML += 'Fork project on <a href="' + options.github + '">Github</a><br/>';
+                    }
+
+                    if (!!options.license) {
+                        footerContent.innerHTML += 'Code released under the <a href="' + options.license + '">MIT</a> License.';
+                    }
+
+                    footer.appendChild(footerContent);
+
+                    return footer;
+                };
+
+                var loadVendor = function(style, next) {
+                    var prismScript = document.createElement('script');
+                    var prismStyle = document.createElement('link');
+                    var showdown = document.createElement('script');
+                    var mainStyle = document.createElement('link');
+                    prismScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js';
+                    prismStyle.rel = 'stylesheet';
+                    prismStyle.href = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-okaidia.min.css';
+                    showdown.src = 'https://cdn.rawgit.com/showdownjs/showdown/1.6.4/dist/showdown.min.js';
+                    mainStyle.rel = 'stylesheet';
+                    mainStyle.href = 'https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/' + (style || 'cosmo') + '/bootstrap.min.css';
+
+                    document.head.appendChild(prismStyle);
+                    document.head.appendChild(mainStyle);
+                    document.head.appendChild(showdown);
+
+                    showdown.onload = function() {
+                        next();
+                        document.head.appendChild(prismScript);
+                    };
                 }
 
-                var readmeTitles = document.querySelectorAll('#api h2, #api h3');
-                for (var i = 0; i < readmeTitles.length; i++) {
-                    readmeTitles[i].innerHTML += ' <a class="anchor" href="#' + readmeTitles[i].id + '">&#182;</a>'
+                loadVendor(options.style, function() {
+                    container.appendChild(createNav(options));
+
+                    if (!!options.readme) {
+                        container.innerHTML += '<section id="readme" class="container"></section><hr/>';
+
+                        var req = new XMLHttpRequest();
+                        req.open('GET', options.readme, false);
+                        req.send(null);
+
+                        if (req.status === 200) {
+                            var converter = new showdown.Converter();
+                            document.querySelector('#readme').innerHTML = converter.makeHtml(req.responseText);
+
+                            var apiTitles = document.querySelectorAll('#readme h2, #readme h3');
+                            for (var i = 0; i < apiTitles.length; i++) {
+                                apiTitles[i].innerHTML += ' <a class="anchor" href="#' + apiTitles[i].id + '">&#182;</a>'
+                            }
+                        }
+                    }
+
+                    if (!!options.api) {
+                        container.innerHTML += '<section id="api" class="container"></section><hr/>';
+
+                        var req = new XMLHttpRequest();
+                        req.open('GET', options.api, false);
+                        req.send(null);
+
+                        if (req.status === 200) {
+                            var converter = new showdown.Converter({ tables: true });
+                            var html = decodeURIComponent(req.responseText);
+                            html = html.replace(/⏏/gi, '');
+                            html = html.replace(/\\/gi, '');
+                            document.querySelector('#api').innerHTML = '<h1 id="api" class="text-center">API</h1>' + converter.makeHtml(html);
+
+                            var tables = document.querySelectorAll('#api table');
+                            for (var i = 0; i < tables.length; i++) {
+                                tables[i].className = 'table table-bordered';
+                            }
+
+                            var apiTitles = document.querySelectorAll('#api h2, #api h3');
+                            for (var i = 0; i < apiTitles.length; i++) {
+                                apiTitles[i].innerHTML += ' <a class="anchor" href="#' + apiTitles[i].id + '">&#182;</a>'
+                            }
+                        }
+                    }
+
+                    if (!!options.changelog) {
+                        container.innerHTML += '<section id="changelog" class="container"></section><hr/>';
+
+                        var req = new XMLHttpRequest();
+                        req.open('GET', options.changelog, false);
+                        req.send(null);
+
+                        if (req.status === 200) {
+                            var converter = new showdown.Converter();
+                            document.querySelector('#changelog').innerHTML = '<h1 id="changelog" class="text-center">Changelog</h1>' + converter.makeHtml(req.responseText);
+                        }
+                    }
+
+                    container.appendChild(createFooter(options));
+                });
+            };
+
+            createDocumentation({
+                name: 'megastores',
+                style: 'cosmo',
+                github: 'https://github.com/kevinbalicot/megastores.js',
+                readme: 'https://raw.githubusercontent.com/kevinbalicot/megastores.js/master/README.md',
+                api: 'https://raw.githubusercontent.com/kevinbalicot/megastores.js/master/docs/documentations.md',
+                changelog: 'https://raw.githubusercontent.com/kevinbalicot/megastores.js/master/CHANGELOG.md',
+                license: 'https://raw.githubusercontent.com/kevinbalicot/megastores.js/master/LICENSE.md',
+                author: {
+                    name: 'Kevin Balicot',
+                    url: 'http://kb-web.fr',
+                    email: 'kevinbalicot[at]gmail.com'
                 }
-            }
-
-            var req = new XMLHttpRequest();
-            req.open('GET', 'https://raw.githubusercontent.com/kevinbalicot/megastores.js/master/README.md', false);
-            req.send(null);
-
-            if (req.status === 200) {
-                var converter = new showdown.Converter();
-                document.querySelector('#readme').innerHTML = converter.makeHtml(req.responseText);
-
-                var apiTitles = document.querySelectorAll('#readme h2, #readme h3');
-                for (var i = 0; i < apiTitles.length; i++) {
-                    apiTitles[i].innerHTML += ' <a class="anchor" href="#' + apiTitles[i].id + '">&#182;</a>'
-                }
-            }
-
-            var req = new XMLHttpRequest();
-            req.open('GET', 'https://raw.githubusercontent.com/kevinbalicot/megastores.js/master/CHANGELOG.md', false);
-            req.send(null);
-
-            if (req.status === 200) {
-                var converter = new showdown.Converter();
-                document.querySelector('#changelog').innerHTML = '<h1 id="changelog">Changelog</h1>' + converter.makeHtml(req.responseText);
-            }
+            });
         </script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
     </body>
 </html>

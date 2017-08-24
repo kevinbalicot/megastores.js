@@ -46,7 +46,7 @@ class Megastores extends BaseMegastores {
         this.connection.on('open', () => {
 
             this.connected = true;
-            this.trigger('open');
+            this.trigger('open', this.connection);
 
             if (!!this.connecting) {
                 clearInterval(this.connecting);

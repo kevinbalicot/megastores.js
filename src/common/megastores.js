@@ -27,16 +27,18 @@ class BaseMegastores extends EventEmitter {
      * Subscribe to global store
      * @param {Callable} callback
      *
+     * @return {Callable}
+     *
      * @alias module:BaseMegastores
      */
     subscribe(callback) {
-        this.store.subscribe(callback);
+        return this.store.subscribe(callback);
     }
 
     /**
      * Dispatch action into global store
      * @param {Object} action
-     * @param {Object} client
+     * @param {Object} [client=null]
      *
      * @alias module:BaseMegastores
      */
