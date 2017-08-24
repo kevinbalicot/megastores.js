@@ -6,7 +6,8 @@
   "scripts": {
     "test": "make test",
     "doc": "node_modules/.bin/jsdoc2md src/**/*.js > docs/documentations.md",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "postinstall": "make build"
   },
   "author": "Kevin Balicot <kevinbalicot@gmail.com>",
   "license": "MIT",
