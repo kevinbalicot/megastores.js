@@ -1,3 +1,19 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/kevinbalicot/megastores.js/compare/v1.1.0...v1.2.0) (2017-08-24)
+
+
+### Bug Fixes
+
+* **build:** Fix lib building ([e608e5c](https://github.com/kevinbalicot/megastores.js/commit/e608e5c))
+
+
+### Features
+
+* **divers:** Add some params into event, fix unsubrice, update documentations ([bdca5d5](https://github.com/kevinbalicot/megastores.js/commit/bdca5d5))
+* **doc:** Add doc, changelog and website ([6ee0fdc](https://github.com/kevinbalicot/megastores.js/commit/6ee0fdc))
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/kevinbalicot/megastores.js/compare/v1.1.0...v1.1.1) (2017-04-14)
 
