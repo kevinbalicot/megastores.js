@@ -1,13 +1,13 @@
 {
   "name": "megastores",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "Store manager with realtime exchanges between server and client",
   "main": "src/server/index.js",
   "scripts": {
     "test": "make test",
     "doc": "node_modules/.bin/jsdoc2md src/**/*.js > docs/documentations.md",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "postinstall": "make build"
+    "prepublish": "make build"
   },
   "author": "Kevin Balicot <kevinbalicot@gmail.com>",
   "license": "MIT",
