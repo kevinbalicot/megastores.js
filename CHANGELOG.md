@@ -1,3 +1,13 @@
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/kevinbalicot/megastores.js/compare/v1.3.0...v1.4.0) (2017-08-25)
+
+
+### Features
+
+* **test:** Add travis file ([a1dd471](https://github.com/kevinbalicot/megastores.js/commit/a1dd471))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/kevinbalicot/megastores.js/compare/v1.2.1...v1.3.0) (2017-08-24)
 
