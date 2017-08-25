@@ -1,3 +1,13 @@
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/kevinbalicot/megastores.js/compare/v1.4.0...v1.5.0) (2017-08-25)
+
+
+### Features
+
+* **server:** Add options 'server' to connect with http server ([d2ff493](https://github.com/kevinbalicot/megastores.js/commit/d2ff493))
+
+
+
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/kevinbalicot/megastores.js/compare/v1.3.0...v1.4.0) (2017-08-25)
 
