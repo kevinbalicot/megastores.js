@@ -32,8 +32,12 @@ class Megastores extends BaseMegastores {
             throw new Error(this.ERROR_INSTANTIATE);
         }
 
-        // Listen on port
-        this.server = new WebSocket.Server({ port, verifyClient: options.auth });
+        if (!!options.server) {
+            this.server = new WebSocket.Server({ server: options.server, verifyClient: options.auth });
+        } else {
+            this.server = new WebSocket.Server({ port, verifyClient: options.auth });
+        }
+
         this.server.storedClients = {};
 
         this.server.on('connection', client => {
