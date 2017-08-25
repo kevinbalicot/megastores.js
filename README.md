@@ -41,7 +41,7 @@ myStore.subscribe(state => {
     var store = new Store('my-store');
     var megastores = new Megastores();
 
-    megastores.attach(store).connect('http://localhost', 8080);
+    megastores.attach(store).connect('ws://localhost:8080');
 
     store.put({ text: 'Hello world!' });
 </script>
@@ -54,11 +54,11 @@ myStore.subscribe(state => {
 * Offline mode with local storage persistence
 
 
-## API References
-### Server - Megastores
+## Documentation
+### Server
 
 #### Events
- * `open` (client) Called every time when client opens connection with server
+ * `connection` (client) Called every time when client opens connection with server
  * `close ` Called every time when client loses connection with server
  * `message` (message) Called every time when client exchanges with server
 
@@ -83,12 +83,14 @@ megastores.listen(8080).on('open', () => {
 var store1 = new Store('store1');
 var store2 = new Store('store2');
 
-var megastores = new Megastores();
-megastores.attach([store1, store2]).listen(8080);
+var server = new Megastores();
+server.attach([store1, store2]).listen(8080);
 
-megastores.on('custom-event', message => {
+server.on('custom-event', message => {
     let client = message.client;
     let data = message.data;
+
+    server.send('response-custom-event', 'hello world!', client);
 });
 ```
 
@@ -110,9 +112,26 @@ megastores.on('custom-event', message => {
 * `subscribe(callback)` Add listener called each time action is dispatched
     * `callback(items)` With `items` is the current state of Store
 
+```javascript
+// Exemple
+var fruits = new Store('fruits', ['apple', 'lemon', 'cherry']);
+
+var server = new Megastores();
+server.attach(fruits).listen(8080);
+
+fruits.subscribe((items) => {
+    console.log(items); // display current state
+});
+
+fruits.use(() => console.log('juste say hello when state changes'));
+
+fruits.put('raspberry');
+fruits.update(1, 'strawberry'); // change lemon to strawberry
+fruits.remove(0); // delete apple
+```
 -------------------
 
-### Client - Megastores
+### Client
 
 #### Events
  * `open` Called every time when connection with server is open
@@ -121,8 +140,8 @@ megastores.on('custom-event', message => {
 
 ```javascript
 // Exemple
-var megastores = new Megastores();
-megastores.connect('http://localhost', 8080).on('open', () => {
+var client = new Megastores();
+client.connect('ws://localhost:8080').on('open', () => {
     console.log('Connected with server.');
 });
 ```
@@ -156,6 +175,23 @@ megastores.connect('http://localhost', 8080).on('open', () => {
 * `subscribe(callback)` Add listener called each time action is dispatched
     * `callback(items)` With `items` is the current state of Store
 
+```javascript
+// Exemple
+var fruits = new Store('fruits', ['apple', 'lemon', 'cherry']);
+
+var client = new Megastores();
+client.attach(fruits).connect('ws://localhost:8080');
+
+fruits.subscribe((items) => {
+    console.log(items); // display current state
+});
+
+fruits.use(() => console.log('juste say hello when state changes'));
+
+fruits.put('raspberry');
+fruits.update(1, 'strawberry'); // change lemon to strawberry
+fruits.remove(0); // delete apple
+```
 -----------
 
 ## Example
@@ -177,7 +213,7 @@ megastores.connect('http://localhost', 8080).on('open', () => {
     const list = document.querySelector('#list');
 
     const todoStore = new Store('todo');
-    const megastores = new Megastores();
+    const client = new Megastores();
 
     const render = function(items) {
         list.innerHTML = '';
@@ -188,7 +224,7 @@ megastores.connect('http://localhost', 8080).on('open', () => {
         });
     }
 
-    megastores.attach(todoStore).connect('http://localhost', 8080).on('open', function() {
+    client.attach(todoStore).connect('ws://localhost:8080').on('open', function() {
         render(todoStore.items);
     });
 
@@ -215,9 +251,9 @@ const { Store, Megastores } = require('megastores');
 var items = [] // Get items from database
 
 const todoStore = new Store('todo', items);
-const megastores = new Megastores();
+const server = new Megastores();
 
-megastores.attach(todoStore).listen(8080);
+server.attach(todoStore).listen(8080);
 
 todoStore.use((action, oldState, newState, next) => {
     // Persist data into database

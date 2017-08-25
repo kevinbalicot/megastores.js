@@ -10,9 +10,6 @@
 <dt><a href="#module_compose">compose</a></dt>
 <dd><p>Queue handle middlewares</p>
 </dd>
-<dt><a href="#module_EventEmitter">EventEmitter</a></dt>
-<dd><p>EventEmitter module</p>
-</dd>
 <dt><a href="#module_BaseMegastores">BaseMegastores</a></dt>
 <dd><p>BaseMegastores module</p>
 </dd>
@@ -43,7 +40,7 @@ ClientMegastores module
 
 * [ClientMegastores](#module_ClientMegastores)
     * [Megastores](#exp_module_ClientMegastores--Megastores) ⇐ <code>BaseMegastores</code> ⏏
-    * [Megastores#connect(url, [port])](#exp_module_ClientMegastores--Megastores+connect) ⇒ <code>Megastores</code> ⏏
+    * [Megastores#connect(uri)](#exp_module_ClientMegastores--Megastores+connect) ⇒ <code>Megastores</code> ⏏
     * [Megastores#dispatch(action, store)](#exp_module_ClientMegastores--Megastores+dispatch) ⏏
     * [Megastores#synchronize()](#exp_module_ClientMegastores--Megastores+synchronize) ⏏
     * [Megastores#send(event, data)](#exp_module_ClientMegastores--Megastores+send) ⏏
@@ -56,14 +53,14 @@ ClientMegastores module
 **Extends**: <code>BaseMegastores</code>  
 <a name="exp_module_ClientMegastores--Megastores+connect"></a>
 
-### Megastores#connect(url, [port]) ⇒ <code>Megastores</code> ⏏
+### Megastores#connect(uri) ⇒ <code>Megastores</code> ⏏
 Connect to server
 
 **Kind**: Exported function  
-**Params**
 
-- url <code>string</code> - Server URI
-- [port] <code>string</code> | <code>number</code> <code> = 8080</code> - Server uri port
+| Param | Type | Description |
+| --- | --- | --- |
+| uri | <code>string</code> | Server URI |
 
 <a name="exp_module_ClientMegastores--Megastores+dispatch"></a>
 
@@ -71,10 +68,11 @@ Connect to server
 Dispatch action
 
 **Kind**: Exported function  
-**Params**
 
-- action <code>string</code>
-- store <code>Store</code>
+| Param | Type |
+| --- | --- |
+| action | <code>string</code> | 
+| store | <code>Store</code> | 
 
 <a name="exp_module_ClientMegastores--Megastores+synchronize"></a>
 
@@ -88,10 +86,11 @@ Synchronize data with server when reconnection
 Send message at server
 
 **Kind**: Exported function  
-**Params**
 
-- event <code>string</code>
-- data <code>Object</code>
+| Param | Type |
+| --- | --- |
+| event | <code>string</code> | 
+| data | <code>Object</code> | 
 
 <a name="exp_module_ClientMegastores--Megastores+listenNewConnection"></a>
 
@@ -99,10 +98,11 @@ Send message at server
 Try to reconnecte
 
 **Kind**: Exported function  
-**Params**
 
-- url <code>string</code>
-- port <code>port</code>
+| Param | Type |
+| --- | --- |
+| url | <code>string</code> | 
+| port | <code>port</code> | 
 
 <a name="module_ClientStore"></a>
 
@@ -130,12 +130,13 @@ ClientStore module
 Reducer, synchronize from server
 
 **Kind**: Exported function  
-**Params**
 
-- [state] <code>Array</code> <code> = []</code>
-- [action] <code>Object</code> <code> = {}</code>
-    - [.type] <code>string</code>
-    - [.payload] <code>Object</code>
+| Param | Type | Default |
+| --- | --- | --- |
+| [state] | <code>Array</code> | <code>[]</code> | 
+| [action] | <code>Object</code> | <code>{}</code> | 
+| [action.type] | <code>string</code> |  | 
+| [action.payload] | <code>Object</code> |  | 
 
 <a name="exp_module_ClientStore--Store+clearCache"></a>
 
@@ -155,9 +156,10 @@ Enable offline, no interaction with server
 Put item or property into state
 
 **Kind**: Exported function  
-**Params**
 
-- item <code>Object</code>
+| Param | Type |
+| --- | --- |
+| item | <code>Object</code> | 
 
 <a name="exp_module_ClientStore--Store+update"></a>
 
@@ -165,10 +167,11 @@ Put item or property into state
 Update item or property
 
 **Kind**: Exported function  
-**Params**
 
-- index <code>number</code>
-- item <code>Object</code>
+| Param | Type |
+| --- | --- |
+| index | <code>number</code> | 
+| item | <code>Object</code> | 
 
 <a name="exp_module_ClientStore--Store+remove"></a>
 
@@ -176,10 +179,11 @@ Update item or property
 Remove item or property
 
 **Kind**: Exported function  
-**Params**
 
-- index <code>number</code>
-- item <code>Object</code>
+| Param | Type |
+| --- | --- |
+| index | <code>number</code> | 
+| item | <code>Object</code> | 
 
 <a name="module_compose"></a>
 
@@ -190,71 +194,15 @@ Queue handle middlewares
 
 ### module.exports(action, oldState, newState, middlewares) ⇒ <code>\*</code> ⏏
 **Kind**: Exported function  
-**Params**
 
-- action <code>Object</code>
-    - .type <code>string</code>
-    - .payload <code>Object</code>
-- oldState <code>Array</code> | <code>Object</code>
-- newState <code>Array</code> | <code>Object</code>
-- middlewares <code>Array.&lt;Object&gt;</code>
-
-<a name="module_EventEmitter"></a>
-
-## EventEmitter
-EventEmitter module
-
-
-* [EventEmitter](#module_EventEmitter)
-    * [EventEmitter#on(event, callback, context)](#exp_module_EventEmitter--EventEmitter+on) ⇒ <code>EventEmitter</code> ⏏
-    * [EventEmitter#once(event, callback, context)](#exp_module_EventEmitter--EventEmitter+once) ⇒ <code>EventEmitter</code> ⏏
-    * [EventEmitter#off(event)](#exp_module_EventEmitter--EventEmitter+off) ⇒ <code>EventEmitter</code> ⏏
-    * [EventEmitter#trigger(event, [data])](#exp_module_EventEmitter--EventEmitter+trigger) ⇒ <code>EventEmitter</code> ⏏
-
-<a name="exp_module_EventEmitter--EventEmitter+on"></a>
-
-### EventEmitter#on(event, callback, context) ⇒ <code>EventEmitter</code> ⏏
-Add event listener
-
-**Kind**: Exported function  
-**Params**
-
-- event <code>string</code>
-- callback <code>Callable</code>
-- context <code>\*</code>
-
-<a name="exp_module_EventEmitter--EventEmitter+once"></a>
-
-### EventEmitter#once(event, callback, context) ⇒ <code>EventEmitter</code> ⏏
-Add event listener will call one time
-
-**Kind**: Exported function  
-**Params**
-
-- event <code>string</code>
-- callback <code>Callable</code>
-- context <code>\*</code>
-
-<a name="exp_module_EventEmitter--EventEmitter+off"></a>
-
-### EventEmitter#off(event) ⇒ <code>EventEmitter</code> ⏏
-Delete event listeners
-
-**Kind**: Exported function  
-**Params**
-
-- event <code>string</code>
-
-<a name="exp_module_EventEmitter--EventEmitter+trigger"></a>
-
-### EventEmitter#trigger(event, [data]) ⇒ <code>EventEmitter</code> ⏏
-Call every listener for event
-
-**Kind**: Exported function  
-**Params**
-
-- event <code>string</code>
-- [data] <code>Object</code> <code> = {}</code>
+| Param | Type |
+| --- | --- |
+| action | <code>Object</code> | 
+| action.type | <code>string</code> | 
+| action.payload | <code>Object</code> | 
+| oldState | <code>Array</code> \| <code>Object</code> | 
+| newState | <code>Array</code> \| <code>Object</code> | 
+| middlewares | <code>Array.&lt;Object&gt;</code> | 
 
 <a name="module_BaseMegastores"></a>
 
@@ -281,9 +229,10 @@ BaseMegastores module
 Subscribe to global store
 
 **Kind**: Exported function  
-**Params**
 
-- callback <code>Callable</code>
+| Param | Type |
+| --- | --- |
+| callback | <code>Callable</code> | 
 
 <a name="exp_module_BaseMegastores--BaseMegastores+dispatch"></a>
 
@@ -291,10 +240,11 @@ Subscribe to global store
 Dispatch action into global store
 
 **Kind**: Exported function  
-**Params**
 
-- action <code>Object</code>
-- [client] <code>Object</code> <code> = </code>
+| Param | Type | Default |
+| --- | --- | --- |
+| action | <code>Object</code> |  | 
+| [client] | <code>Object</code> | <code></code> | 
 
 <a name="exp_module_BaseMegastores--BaseMegastores+getState"></a>
 
@@ -308,9 +258,10 @@ Get current state of global store
 Add store or a list of stores into global store
 
 **Kind**: Exported function  
-**Params**
 
-- store <code>Array.&lt;Store&gt;</code> | <code>Store</code>
+| Param | Type |
+| --- | --- |
+| store | <code>Array.&lt;Store&gt;</code> \| <code>Store</code> | 
 
 <a name="exp_module_BaseMegastores--BaseMegastores+createStore"></a>
 
@@ -356,9 +307,10 @@ Private method to create new state from a state
 
 **Kind**: Exported function  
 **Access**: protected  
-**Params**
 
-- state <code>Object</code>
+| Param | Type |
+| --- | --- |
+| state | <code>Object</code> | 
 
 <a name="exp_module_BaseStore--BaseStore+merge"></a>
 
@@ -366,10 +318,11 @@ Private method to create new state from a state
 Private method to merge item or property into state
 
 **Kind**: Exported function  
-**Params**
 
-- state <code>Object</code>
-- item <code>Object</code>
+| Param | Type |
+| --- | --- |
+| state | <code>Object</code> | 
+| item | <code>Object</code> | 
 
 <a name="exp_module_BaseStore--BaseStore+edit"></a>
 
@@ -378,11 +331,12 @@ Private method to update item or property of state
 
 **Kind**: Exported function  
 **Returns**: <code>Object</code> - state  
-**Params**
 
-- state <code>Object</code>
-- index <code>number</code>
-- item <code>Object</code>
+| Param | Type |
+| --- | --- |
+| state | <code>Object</code> | 
+| index | <code>number</code> | 
+| item | <code>Object</code> | 
 
 <a name="exp_module_BaseStore--BaseStore+delete"></a>
 
@@ -391,10 +345,11 @@ Private method to delete item or property of state
 
 **Kind**: Exported function  
 **Returns**: <code>Object</code> - state  
-**Params**
 
-- state <code>Object</code>
-- index <code>number</code>
+| Param | Type |
+| --- | --- |
+| state | <code>Object</code> | 
+| index | <code>number</code> | 
 
 <a name="exp_module_BaseStore--BaseStore+dispatchMiddelwares"></a>
 
@@ -402,13 +357,14 @@ Private method to delete item or property of state
 Dispatch action at middelwares
 
 **Kind**: Exported function  
-**Params**
 
-- [action] <code>Object</code> <code> = {}</code>
-    - [.type] <code>string</code>
-    - [.payload] <code>Object</code>
-- oldState <code>Object</code>
-- newState <code>Object</code>
+| Param | Type | Default |
+| --- | --- | --- |
+| [action] | <code>Object</code> | <code>{}</code> | 
+| [action.type] | <code>string</code> |  | 
+| [action.payload] | <code>Object</code> |  | 
+| oldState | <code>Object</code> |  | 
+| newState | <code>Object</code> |  | 
 
 <a name="exp_module_BaseStore--BaseStore+use"></a>
 
@@ -416,9 +372,10 @@ Dispatch action at middelwares
 Add middleware
 
 **Kind**: Exported function  
-**Params**
 
-- callback <code>Callable</code>
+| Param | Type |
+| --- | --- |
+| callback | <code>Callable</code> | 
 
 <a name="exp_module_BaseStore--BaseStore+put"></a>
 
@@ -427,9 +384,10 @@ Put item or property
 
 **Kind**: Exported function  
 **Throw**: Error  
-**Params**
 
-- item <code>Object</code>
+| Param | Type |
+| --- | --- |
+| item | <code>Object</code> | 
 
 <a name="exp_module_BaseStore--BaseStore+find"></a>
 
@@ -438,10 +396,11 @@ Find item by key, value or find property by key
 
 **Kind**: Exported function  
 **Throw**: Error  
-**Params**
 
-- key <code>string</code>
-- value <code>\*</code> <code> = </code>
+| Param | Type | Default |
+| --- | --- | --- |
+| key | <code>string</code> |  | 
+| value | <code>\*</code> | <code></code> | 
 
 <a name="exp_module_BaseStore--BaseStore+update"></a>
 
@@ -450,10 +409,11 @@ Update item or property
 
 **Kind**: Exported function  
 **Throw**: Error  
-**Params**
 
-- index <code>number</code>
-- item <code>Object</code>
+| Param | Type |
+| --- | --- |
+| index | <code>number</code> | 
+| item | <code>Object</code> | 
 
 <a name="exp_module_BaseStore--BaseStore+remove"></a>
 
@@ -462,9 +422,10 @@ Remove item or property
 
 **Kind**: Exported function  
 **Throw**: Error  
-**Params**
 
-- index <code>number</code> | <code>string</code>
+| Param | Type |
+| --- | --- |
+| index | <code>number</code> \| <code>string</code> | 
 
 <a name="exp_module_BaseStore--BaseStore+subscribe"></a>
 
@@ -473,9 +434,10 @@ Subscribe to state changes
 
 **Kind**: Exported function  
 **Throw**: Error  
-**Params**
 
-- callback <code>Callable</code>
+| Param | Type |
+| --- | --- |
+| callback | <code>Callable</code> | 
 
 <a name="module_ServerMegastores"></a>
 
@@ -485,7 +447,7 @@ ServerMegastores module
 
 * [ServerMegastores](#module_ServerMegastores)
     * [Megastores](#exp_module_ServerMegastores--Megastores) ⇐ <code>BaseMegastores</code> ⏏
-    * [Megastores#listen([port])](#exp_module_ServerMegastores--Megastores+listen) ⇒ <code>Megastores</code> ⏏
+    * [Megastores#listen([port], [options])](#exp_module_ServerMegastores--Megastores+listen) ⇒ <code>Megastores</code> ⏏
     * [Megastores#synchronize(client)](#exp_module_ServerMegastores--Megastores+synchronize) ⏏
     * [Megastores#broadcast(action, [fromClient])](#exp_module_ServerMegastores--Megastores+broadcast) ⏏
     * [Megastores#dispatch(action, [client])](#exp_module_ServerMegastores--Megastores+dispatch) ⏏
@@ -498,13 +460,15 @@ ServerMegastores module
 **Extends**: <code>BaseMegastores</code>  
 <a name="exp_module_ServerMegastores--Megastores+listen"></a>
 
-### Megastores#listen([port]) ⇒ <code>Megastores</code> ⏏
+### Megastores#listen([port], [options]) ⇒ <code>Megastores</code> ⏏
 Listen on port
 
 **Kind**: Exported function  
-**Params**
 
-- [port] <code>number</code> | <code>string</code> <code> = 8080</code>
+| Param | Type | Default |
+| --- | --- | --- |
+| [port] | <code>number</code> \| <code>string</code> | <code>8080</code> | 
+| [options] | <code>Object</code> | <code>{}</code> | 
 
 <a name="exp_module_ServerMegastores--Megastores+synchronize"></a>
 
@@ -512,9 +476,10 @@ Listen on port
 Synchronize stores with clients
 
 **Kind**: Exported function  
-**Params**
 
-- client <code>Object</code>
+| Param | Type |
+| --- | --- |
+| client | <code>Object</code> | 
 
 <a name="exp_module_ServerMegastores--Megastores+broadcast"></a>
 
@@ -523,10 +488,11 @@ Broadcast client actions dispatched
 
 **Kind**: Exported function  
 **Throw**: Error  
-**Params**
 
-- action <code>string</code>
-- [fromClient] <code>Object</code> <code> = </code>
+| Param | Type | Default |
+| --- | --- | --- |
+| action | <code>string</code> |  | 
+| [fromClient] | <code>Object</code> | <code></code> | 
 
 <a name="exp_module_ServerMegastores--Megastores+dispatch"></a>
 
@@ -534,10 +500,11 @@ Broadcast client actions dispatched
 Dispatch action into global store and broadcast it
 
 **Kind**: Exported function  
-**Params**
 
-- action <code>string</code>
-- [client] <code>Object</code> <code> = </code>
+| Param | Type | Default |
+| --- | --- | --- |
+| action | <code>string</code> |  | 
+| [client] | <code>Object</code> | <code></code> | 
 
 <a name="exp_module_ServerMegastores--Megastores+send"></a>
 
@@ -545,11 +512,12 @@ Dispatch action into global store and broadcast it
 Send message to client or all client
 
 **Kind**: Exported function  
-**Params**
 
-- event <code>string</code>
-- data <code>Object</code>
-- [client] <code>Object</code> <code> = </code>
+| Param | Type | Default |
+| --- | --- | --- |
+| event | <code>string</code> |  | 
+| data | <code>Object</code> |  | 
+| [client] | <code>Object</code> | <code></code> | 
 
 <a name="module_ServerStore"></a>
 
@@ -569,9 +537,10 @@ ServerStore module
 <a name="new_module_ServerStore--Store_new"></a>
 
 #### new Store(name, [initialState], [options])
-**Params**
 
-- name <code>string</code>
-- [initialState] <code>Array</code> <code> = []</code>
-- [options] <code>Object</code> <code> = {}</code>
+| Param | Type | Default |
+| --- | --- | --- |
+| name | <code>string</code> |  | 
+| [initialState] | <code>Array</code> | <code>[]</code> | 
+| [options] | <code>Object</code> | <code>{}</code> | 
 

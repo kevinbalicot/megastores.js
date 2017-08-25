@@ -1,4 +1,5 @@
-const engine = require('engine.io');
+const WebSocket = require('ws');
+const uuid = require('node-uuid');
 const BaseMegastores = require('./../common/megastores');
 
 /**
@@ -11,44 +12,52 @@ class Megastores extends BaseMegastores {
      *
      * @alias module:ServerMegastores
      */
-    constructor () {
+    constructor() {
         super();
+
         this.server = null;
     }
 
     /**
      * Listen on port
      * @param {number|string} [port=8080]
+     * @param {Object} [options={}]
      *
      * @return {Megastores}
      *
      * @alias module:ServerMegastores
      */
-    listen(port = 8080) {
+    listen(port = 8080, options = {}) {
         if (this.store == null) {
             throw new Error(this.ERROR_INSTANTIATE);
         }
 
         // Listen on port
-        this.server = engine.listen(port);
+        this.server = new WebSocket.Server({ port, verifyClient: options.auth });
+        this.server.storedClients = {};
+
         this.server.on('connection', client => {
-            this.trigger('open', client);
+            client.id = uuid.v4();
+            this.server.storedClients[client.id] = client;
+
+            this.emit('connection', client);
             this.synchronize(client);
 
             // Receive message from clients, dispatch to store
             client.on('message', message => {
                 const action = JSON.parse(message);
-                this.trigger('message', action);
+                this.emit('message', action);
 
                 if (!!action.event) {
-                    this.trigger(action.event, { data: action.data, client: client });
+                    this.emit(action.event, { data: action.data, client: client });
                 } else {
                     this.dispatch(action, client);
                 }
             });
 
             client.on('close', () => {
-                this.trigger('close', client);
+                this.removeClient(client);
+                this.emit('close', client);
             });
         });
 
@@ -81,12 +90,12 @@ class Megastores extends BaseMegastores {
             throw new Error(this.ERROR_INSTANTIATE);
         }
 
-        for (let key in this.server.clients) {
+        for (let key in this.server.storedClients) {
             if (fromClient !== null && key === fromClient.id) {
                 continue;
             }
 
-            this.server.clients[key].send(JSON.stringify(action));
+            this.server.storedClients[key].send(JSON.stringify(action));
         };
     }
 
@@ -119,6 +128,22 @@ class Megastores extends BaseMegastores {
         } else {
             this.broadcast({ event, data });
         }
+    }
+
+    /**
+     * remove client
+     * @param {Object} client
+     */
+    removeClient(client) {
+        delete this.server.storedClients[client.id];
+    }
+
+    /**
+     * Return list of clients
+     * @return {Object}
+     */
+    get clients() {
+        return this.server.storedClients;
     }
 }
 

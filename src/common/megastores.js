@@ -1,5 +1,5 @@
 const { combineReducers, createStore, applyMiddleware } = require('redux');
-const EventEmitter = require('./eventEmitter');
+const EventEmitter = require('events');
 
 /**
  * BaseMegastores module

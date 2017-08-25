@@ -1,6 +1,4 @@
-const engine = require('engine.io-client');
 const BaseMegastores = require('./../common/megastores');
-const EventEmitter = require('./../common/eventEmitter');
 
 /**
  * ClientMegastores module
@@ -22,14 +20,13 @@ class Megastores extends BaseMegastores {
 
     /**
      * Connect to server
-     * @param {string} url - Server URI
-     * @param {string|number} [port=8080] - Server uri port
+     * @param {string} uri - Server URI
      *
      * @return {Megastores}
      *
      * @alias module:ClientMegastores
      */
-    connect(url, port = 8080) {
+    connect(uri) {
         if (this.store == null) {
             throw new Error(this.ERROR_INSTANTIATE);
         }
@@ -39,14 +36,14 @@ class Megastores extends BaseMegastores {
         }
 
         clearInterval(this.connecting);
-        this.listenNewConnection(url, port);
+        this.listenNewConnection(uri);
 
         // Connect to server
-        this.connection = new engine.Socket(`${url}:${port}`);
-        this.connection.on('open', () => {
+        this.connection = new WebSocket(uri);
+        this.connection.onopen = () => {
 
             this.connected = true;
-            this.trigger('open', this.connection);
+            this.emit('open', this.connection);
 
             if (!!this.connecting) {
                 clearInterval(this.connecting);
@@ -55,24 +52,24 @@ class Megastores extends BaseMegastores {
             }
 
             // Receive message from server, dispatch to store
-            this.connection.on('message', message => {
-                const action = JSON.parse(message);
-                this.trigger('message', action);
+            this.connection.onmessage = message => {
+                const action = JSON.parse(message.data);
+                this.emit('message', action);
 
                 if (!!action.event) {
-                    this.trigger(action.event, action.data);
+                    this.emit(action.event, action.data);
                 } else {
                     this.store.dispatch(action);
                 }
-            });
+            };
 
             // Lost connection with server, try to reconnect
-            this.connection.on('close', () => {
+            this.connection.onclose = () => {
                 this.connected = false;
-                this.trigger('close');
-                this.listenNewConnection(url, port);
-            });
-        });
+                this.emit('close');
+                this.listenNewConnection(uri);
+            };
+        };
 
         return this;
     }
