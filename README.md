@@ -2,6 +2,8 @@
 
 Store manager with realtime exchanges between client and server
 
+Tests : [![Build Status](https://travis-ci.org/kevinbalicot/megastores.js.svg?branch=master)](https://travis-ci.org/kevinbalicot/megastores.js)
+
 ## Dependances
 
 * redux [https://github.com/reactjs/redux](https://github.com/reactjs/redux)
