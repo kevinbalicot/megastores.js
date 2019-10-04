@@ -1,5 +1,5 @@
 const WebSocket = require('ws');
-const uuid = require('node-uuid');
+const uuid = require('uuid');
 const BaseMegastores = require('./../common/megastores');
 
 /**
@@ -45,6 +45,7 @@ class Megastores extends BaseMegastores {
             this.server.storedClients[client.id] = client;
 
             this.emit('connection', client);
+            this.send('connection', { id: client.id }, client);
             this.synchronize(client);
 
             // Receive message from clients, dispatch to store

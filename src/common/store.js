@@ -1,4 +1,5 @@
 const compose = require('./compose');
+const uuid = require('uuid');
 
 /**
  * BaseStore module
@@ -178,6 +179,10 @@ class BaseStore {
             throw new Error(this.ERROR_INSTANTIATE);
         }
 
+        if (!!this.options.autoIndex) {
+            item._id = uuid.v4();
+        }
+
         return this.store.dispatch({ type: this.ADD_ITEM, payload: item }, this);
     }
 
@@ -187,7 +192,7 @@ class BaseStore {
      * @param {*} value
      * @throw Error
      *
-     * @return {Object|null}
+     * @return {Object|array|null}
      *
      * @alias module:BaseStore
      */
@@ -197,7 +202,29 @@ class BaseStore {
         }
 
         if (Array.isArray(this.items)) {
-            return this.items.filter(item => item[key] == value);
+            return this.items.filter(item => item[key] === value);
+        }
+
+        return this.items[key] == undefined ? null : this.items[key];
+    }
+
+    /**
+     * Find one item by key, value or find property by key
+     * @param {string} key
+     * @param {*} value
+     * @throw Error
+     *
+     * @return {Object|null}
+     *
+     * @alias module:BaseStore
+     */
+    findOne(key, value = null) {
+        if (!this.store) {
+            throw new Error(this.ERROR_INSTANTIATE);
+        }
+
+        if (Array.isArray(this.items)) {
+            return this.items.find(item => item[key] === value);
         }
 
         return this.items[key] == undefined ? null : this.items[key];
@@ -205,17 +232,22 @@ class BaseStore {
 
     /**
      * Update item or property
-     * @param {number} index
-     * @param {Object} item
+     * @param {number|Object} index
+     * @param {Object} [item=null]
      * @throw Error
      *
      * @return {*}
      *
      * @alias module:BaseStore
      */
-    update(index, item) {
+    update(index, item = null) {
         if (!this.store) {
             throw new Error(this.ERROR_INSTANTIATE);
+        }
+
+        if (!!this.options.autoIndex && !!index._id) {
+            item = index;
+            index = this.items.findIndex(el => el._id === index._id);
         }
 
         return this.store.dispatch({ type: this.UPDATE_ITEM, payload: item, index }, this);
@@ -223,7 +255,7 @@ class BaseStore {
 
     /**
      * Remove item or property
-     * @param {number|string} index
+     * @param {number|string|Object} index
      * @throw Error
      *
      * @return {*}
@@ -233,6 +265,10 @@ class BaseStore {
     remove(index) {
         if (!this.store) {
             throw new Error(this.ERROR_INSTANTIATE);
+        }
+
+        if (!!this.options.autoIndex && !!index._id) {
+            index = this.items.findIndex(el => el._id === index._id);
         }
 
         return this.store.dispatch({ type: this.DELETE_ITEM, index }, this);

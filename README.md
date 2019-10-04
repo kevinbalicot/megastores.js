@@ -137,15 +137,20 @@ fruits.remove(0); // delete apple
 
 #### Events
  * `open` Called every time when connection with server is open
+ * `connection` Called every time when connection is initialized (get client id)
  * `close ` Called every time when client loses connection with server
  * `message` (message) Called every time when server exchanges with client
 
 ```javascript
 // Exemple
 var client = new Megastores();
-client.connect('ws://localhost:8080').on('open', () => {
-    console.log('Connected with server.');
-});
+client.connect('ws://localhost:8080')
+    .on('open', () => {
+        console.log('Connected with server.');
+    })
+    .on('connection', clientInfos => {
+        console.log(clientInfos.id);
+    });
 ```
 
 #### Methods

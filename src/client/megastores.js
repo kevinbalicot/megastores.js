@@ -83,7 +83,7 @@ class Megastores extends BaseMegastores {
      */
     dispatch(action, store) {
         // Don't send to server if offline mode or no connection
-        if (!!this.connection && !store.options.offline) {
+        if (!!this.connection && !!this.connected && !store.options.offline) {
             this.connection.send(JSON.stringify(action));
         }
 
